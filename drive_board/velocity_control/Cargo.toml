@@ -1,0 +1,13 @@
+[package]
+name = "motion_control"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+num-traits = "0.2.17"
+regex = "1.10.2"
+rustfft = "6.1.0"
+serde = { version = "1.0.193", features = ["derive"] }
+serialport = "4.3.0"
