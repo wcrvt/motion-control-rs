@@ -29,8 +29,8 @@ fn main() -> Result<(), Box<dyn Error>> {
     let jm: f64 = 0.6;
 
     let g: f64 = 300.0;
-    let mut dob = [dob::VelocityBased::<_, 3>::new(TS, kt, jm, g); 2];
-    let mut rfob = [dob::VelocityBased::<_, 3>::new(TS, kt, jm, g); 2];
+    let mut dob = [dob::VelocityBased::<_, 2>::new(TS, kt, jm, g); 2];
+    let mut rfob = [dob::VelocityBased::<_, 2>::new(TS, kt, jm, g); 2];
 
     //Logging
     const ROW_SIZE: usize = 5;

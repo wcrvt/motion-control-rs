@@ -2,7 +2,10 @@ use digitalservo::mclib::disturbance_observer;
 use digitalservo::plant::motor;
 use digitalservo::data_storage::DataStorage;
 
+const TEST_NUM: usize = 4;
+
 fn main()-> Result<(), Box<dyn std::error::Error>> {
+
 
     //Time step configuration
     let mut t: f64 = 0.0;
@@ -10,8 +13,6 @@ fn main()-> Result<(), Box<dyn std::error::Error>> {
     const PLOOP_NUM: usize = 100;
     const TS: f64 = 500e-6;
     const TP: f64 = TS / PLOOP_NUM as f64;
-
-    const TEST_NUM: usize = 4;
 
     const ROW_SIZE: usize = TEST_NUM + 2;
     const DATAFILE_SEPARATOR: &str = ",";
@@ -23,10 +24,10 @@ fn main()-> Result<(), Box<dyn std::error::Error>> {
     let mut plant = motor::Plant::new(TP, jm);
 
     let g: f64 = 100.0;
-    let mut dob0 = disturbance_observer::VelocityBased::<_, 1>::new(TS, kt, jm, g);
-    let mut dob1 = disturbance_observer::VelocityBased::<_, 2>::new(TS, kt, jm, g);
-    let mut dob2 = disturbance_observer::VelocityBased::<_, 3>::new(TS, kt, jm, g);
-    let mut dob3 = disturbance_observer::VelocityBased::<_, 11>::new(TS, kt, jm, g);
+    let mut dob0 = disturbance_observer::VelocityBased::<_, 0>::new(TS, kt, jm, g);
+    let mut dob1 = disturbance_observer::VelocityBased::<_, 1>::new(TS, kt, jm, g);
+    let mut dob2 = disturbance_observer::VelocityBased::<_, 2>::new(TS, kt, jm, g);
+    let mut dob3 = disturbance_observer::VelocityBased::<_, 3>::new(TS, kt, jm, g);
 
     let mut iq_ref: f64 = 0.0;
     let mut tau: f64;
@@ -44,7 +45,7 @@ fn main()-> Result<(), Box<dyn std::error::Error>> {
         iq_ref = -1.0;// + (2.0 * std::f64::consts::PI * 3.0 * t);
         tau = kt * iq_ref;
 
-        tau_dis = 1.0;
+        tau_dis = if t < 0.1 { 1.0 } else { 0.0 };
 
         for _ in 0..PLOOP_NUM {
             plant.update(tau - tau_dis);

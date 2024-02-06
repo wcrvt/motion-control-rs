@@ -30,7 +30,7 @@ fn main() -> Result<(), Box<dyn Error>> {
         .set_init_theta(0.2);
 
     let g: f64 = 500.0;
-    let mut dob = dob::VelocityBased::<_, 1>::new(TS, kt, mm + mp, g);
+    let mut dob = dob::VelocityBased::<_, 0>::new(TS, kt, mm + mp, g);
 
 
     //Logging
