@@ -40,9 +40,9 @@ impl <T: Float + Default, S: Borrow<Vector<T, 4>>> From<S> for DirectionCosineMa
 
 #[derive(Debug)]
 pub struct ObserverOutput <T> {
-  pub q_hat: [T; 4],
-  pub dq_hat: [T; 4],
-  pub omega_hat: [T; 3],
+  pub q: [T; 4],
+  pub dq: [T; 4],
+  pub omega: [T; 3],
 }
 
 pub struct QuaternionObserver <T> {
@@ -159,9 +159,9 @@ impl <T: Float + Default + std::ops::AddAssign + std::ops::DivAssign> Quaternion
     self.q_hat /= q_hat_norm;
 
     ObserverOutput {
-      q_hat: self.q_hat.data,
-      dq_hat: self.dq_hat.data,
-      omega_hat: self.omega_hat.data
+      q: self.q_hat.data,
+      dq: self.dq_hat.data,
+      omega: self.omega_hat.data
     }
 
   }
