@@ -16,7 +16,7 @@ pub struct VelocityBased <T, const N: usize> where [(); N + 1]: {
   py0_z1: T,
 }
 
-impl<T: Float + Default + std::fmt::Debug, const N: usize> VelocityBased <T, N> where [(); N + 1]:, [(); N + 2]: {
+impl<T: Float + Default, const N: usize> VelocityBased <T, N> where [(); N + 1]:, [(); N + 2]: {
 
   pub fn new(ts: T, kt: T, jm: T, bandwidth: T) -> Self {
 
