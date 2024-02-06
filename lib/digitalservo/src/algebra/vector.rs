@@ -233,7 +233,7 @@ impl<T, const ROWS: usize> Vector<T, ROWS>
   pub fn dot (self, other: &Self) -> T {
     let mut ret: T = T::default();
     for i in 0..ROWS {
-        ret = ret + self[i] * other[i];
+      ret = ret + self[i] * other[i];
     }
     ret
   }

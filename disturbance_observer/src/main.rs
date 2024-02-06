@@ -8,9 +8,9 @@ fn main()-> Result<(), Box<dyn std::error::Error>> {
 
     //Time step configuration
     let mut t: f64 = 0.0;
-    const SLOOP_NUM: usize = 500;
+    const SLOOP_NUM: usize = 2000;
     const PLOOP_NUM: usize = 1;
-    const TS: f64 = 500e-6;
+    const TS: f64 = 100e-6;
     const TP: f64 = TS / PLOOP_NUM as f64;
 
     //Logging
@@ -25,11 +25,11 @@ fn main()-> Result<(), Box<dyn std::error::Error>> {
     let mut plant = motor::Plant::new(TP, jm);
 
     //Disturbance observer
-    let g: f64 = 100.0;
+    let g: f64 = 50.0;
     let mut dob0 = disturbance_observer::VelocityBased::<_, 0>::new(TS, kt, jm, g);
-    let mut dob1 = disturbance_observer::VelocityBased::<_, 1>::new(TS, kt, jm, g);
-    let mut dob2 = disturbance_observer::VelocityBased::<_, 5>::new(TS, kt, jm, g);
-    let mut dob3 = disturbance_observer::VelocityBased::<_, 6>::new(TS, kt, jm, g);
+    let mut dob1 = disturbance_observer::VelocityBased::<_, 10>::new(TS, kt, jm, g);
+    let mut dob2 = disturbance_observer::VelocityBased::<_, 20>::new(TS, kt, jm, g);
+    let mut dob3 = disturbance_observer::VelocityBased::<_, 100>::new(TS, kt, jm, g);
 
     //Control signal
     let mut iq_ref: f64 = 0.0;

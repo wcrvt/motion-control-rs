@@ -11,4 +11,3 @@ rand = "0.8.5"
 rand_distr = "0.4.3"
 
 digitalservo = {path = "../lib/digitalservo"}
-system-identification = {path = "../lib/system-identification"}
