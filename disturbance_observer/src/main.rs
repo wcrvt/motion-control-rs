@@ -9,7 +9,7 @@ fn main()-> Result<(), Box<dyn std::error::Error>> {
     //Time step configuration
     let mut t: f64 = 0.0;
     const SLOOP_NUM: usize = 500;
-    const PLOOP_NUM: usize = 100;
+    const PLOOP_NUM: usize = 1;
     const TS: f64 = 500e-6;
     const TP: f64 = TS / PLOOP_NUM as f64;
 
@@ -46,7 +46,6 @@ fn main()-> Result<(), Box<dyn std::error::Error>> {
         tau_dis_est[3] = dob3.update(iq_ref, plant.d1x);
 
         iq_ref = -1.0 + 0.5 * (2.0 * std::f64::consts::PI * 3.0 * t);
-        if t > 0.15 { iq_ref = - 1.0; }
 
         tau = kt * iq_ref;
 
