@@ -2,7 +2,7 @@ use std::error::Error;
 
 use digitalservo::plant::rigid_body;
 use digitalservo::data_storage::DataStorage;
-use digitalservo::mclib::disturbance_observer0 as dob;
+use digitalservo::mclib::disturbance_observer as dob;
 use digitalservo::mclib::quaternion_observer;
 
 fn main()-> Result<(), Box<dyn Error>>  {
@@ -35,9 +35,9 @@ fn main()-> Result<(), Box<dyn Error>>  {
   //disturbance observer
   let g: f64 = 500.0;
   let mut dob = [
-    dob::VelocityBased::new(TS, 1.0, jb[0], g),
-    dob::VelocityBased::new(TS, 1.0, jb[1], g),
-    dob::VelocityBased::new(TS, 1.0, jb[2], g)
+    dob::VelocityBased::<_, 1>::new(TS, 1.0, jb[0], g),
+    dob::VelocityBased::<_, 1>::new(TS, 1.0, jb[1], g),
+    dob::VelocityBased::<_, 1>::new(TS, 1.0, jb[2], g)
   ];
 
   //quaternion observer

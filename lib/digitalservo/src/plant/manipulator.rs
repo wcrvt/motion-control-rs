@@ -19,7 +19,7 @@ pub struct SeriesLinkManipulator <T: Float> {
   ts: T,
 }
 
-impl <T: Float + Default + std::ops::AddAssign + num_traits::Float> SeriesLinkManipulator<T> {
+impl <T: Float + Default + std::ops::AddAssign> SeriesLinkManipulator<T> {
   pub fn new(kt: [T; JOINTSPACE_DIM], jm: [T; JOINTSPACE_DIM], link: [T; JOINTSPACE_DIM], ts: T) -> Self {
     Self {
       d0theta: Vector::<T, JOINTSPACE_DIM>::new(),

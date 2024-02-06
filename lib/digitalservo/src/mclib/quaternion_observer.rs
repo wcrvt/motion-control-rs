@@ -56,7 +56,7 @@ pub struct QuaternionObserver <T> {
   pub ts: T,
 }
 
-impl <T: Float + Default + std::ops::AddAssign + std::ops::DivAssign> QuaternionObserver<T> {
+impl <T: Float + Default> QuaternionObserver<T> {
   
   pub fn new(ts: T) -> Self {
     Self {

@@ -3,7 +3,7 @@ use std::borrow::Borrow;
 use std::ops::{Add, AddAssign, Div, DivAssign, Index, IndexMut, Mul, MulAssign, Sub, SubAssign};
 use super::vector::*;
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Copy)]
 pub struct Matrix<T, const ROWS: usize, const COLS: usize> {
   pub data: [[T; COLS]; ROWS],
 }
@@ -131,7 +131,7 @@ impl<T, S, const ROWS: usize, const COLS: usize> Sub<S> for &Matrix<T, ROWS, COL
 
 /* multiple by matrix */
 impl<T, const K: usize, const ROWS: usize, const COLS: usize> Mul<Matrix<T, COLS, K>> for Matrix<T, ROWS, COLS>
-  where T: Mul<Output = T> + AddAssign + Default + Copy
+  where T: Add<Output = T> + Mul<Output = T> + Default + Copy
 {
   type Output = Matrix<T, ROWS, K>;
 
@@ -141,7 +141,7 @@ impl<T, const K: usize, const ROWS: usize, const COLS: usize> Mul<Matrix<T, COLS
       for j in 0..K {
         let mut x = T::default();
         for k in 0..COLS {
-          x += self.data[i][k] * other.data[k][j]
+          x = x + self.data[i][k] * other.data[k][j]
         }
         result.data[i][j] = x;
       }
@@ -151,7 +151,7 @@ impl<T, const K: usize, const ROWS: usize, const COLS: usize> Mul<Matrix<T, COLS
 }
 
 impl<T, const K: usize, const ROWS: usize, const COLS: usize> Mul<&Matrix<T, COLS, K>> for Matrix<T, ROWS, COLS>
-  where T: Mul<Output = T> + AddAssign + Default + Copy
+  where T: Add<Output = T> + Mul<Output = T> + Default + Copy
 {
   type Output = Matrix<T, ROWS, K>;
 
@@ -161,7 +161,7 @@ impl<T, const K: usize, const ROWS: usize, const COLS: usize> Mul<&Matrix<T, COL
       for j in 0..K {
         let mut x = T::default();
         for k in 0..COLS {
-          x += self.data[i][k] * other.data[k][j]
+          x = x + self.data[i][k] * other.data[k][j]
         }
         result.data[i][j] = x;
       }
@@ -171,7 +171,7 @@ impl<T, const K: usize, const ROWS: usize, const COLS: usize> Mul<&Matrix<T, COL
 }
 
 impl<T, const K: usize, const ROWS: usize, const COLS: usize> Mul<Matrix<T, COLS, K>> for &Matrix<T, ROWS, COLS>
-  where T: Mul<Output = T> + AddAssign + Default + Copy
+  where T: Add<Output = T> + Mul<Output = T> + Default + Copy
 {
   type Output = Matrix<T, ROWS, K>;
 
@@ -181,7 +181,7 @@ impl<T, const K: usize, const ROWS: usize, const COLS: usize> Mul<Matrix<T, COLS
       for j in 0..K {
         let mut x = T::default();
         for k in 0..COLS {
-          x += self.data[i][k] * other.data[k][j]
+          x = x + self.data[i][k] * other.data[k][j]
         }
         result.data[i][j] = x;
       }
@@ -191,7 +191,7 @@ impl<T, const K: usize, const ROWS: usize, const COLS: usize> Mul<Matrix<T, COLS
 }
 
 impl<T, const K: usize, const ROWS: usize, const COLS: usize> Mul<&Matrix<T, COLS, K>> for &Matrix<T, ROWS, COLS>
-  where T: Mul<Output = T> + AddAssign + Default + Copy
+  where T: Add<Output = T> + Mul<Output = T> + Default + Copy
 {
   type Output = Matrix<T, ROWS, K>;
 
@@ -201,7 +201,7 @@ impl<T, const K: usize, const ROWS: usize, const COLS: usize> Mul<&Matrix<T, COL
       for j in 0..K {
         let mut x = T::default();
         for k in 0..COLS {
-          x += self.data[i][k] * other.data[k][j]
+          x = x + self.data[i][k] * other.data[k][j]
         }
         result.data[i][j] = x;
       }
@@ -213,7 +213,7 @@ impl<T, const K: usize, const ROWS: usize, const COLS: usize> Mul<&Matrix<T, COL
 
 /* multiple by vector */
 impl<T, const ROWS: usize, const COLS: usize> Mul<Vector<T, COLS>> for Matrix<T, ROWS, COLS>
-  where T: Mul<Output = T> + AddAssign + Default + Copy
+  where T: Add<Output = T> + Mul<Output = T> + Default + Copy
 {
   type Output = Vector<T, ROWS>;
 
@@ -222,7 +222,7 @@ impl<T, const ROWS: usize, const COLS: usize> Mul<Vector<T, COLS>> for Matrix<T,
       for i in 0..ROWS {
           let mut x = T::default();
           for j in 0..COLS {
-              x += self.data[i][j] * other.data[j]
+              x = x + self.data[i][j] * other.data[j]
           }
           result.data[i] = x;
       }
@@ -231,7 +231,7 @@ impl<T, const ROWS: usize, const COLS: usize> Mul<Vector<T, COLS>> for Matrix<T,
 }
 
 impl<T, const ROWS: usize, const COLS: usize> Mul<&Vector<T, COLS>> for Matrix<T, ROWS, COLS>
-  where T: Mul<Output = T> + AddAssign + Default + Copy
+  where T: Add<Output = T> + Mul<Output = T> + Default + Copy
 {
   type Output = Vector<T, ROWS>;
 
@@ -240,7 +240,7 @@ impl<T, const ROWS: usize, const COLS: usize> Mul<&Vector<T, COLS>> for Matrix<T
       for i in 0..ROWS {
           let mut x = T::default();
           for j in 0..COLS {
-              x += self.data[i][j] * other.data[j]
+              x = x + self.data[i][j] * other.data[j]
           }
           result.data[i] = x;
       }
@@ -249,7 +249,7 @@ impl<T, const ROWS: usize, const COLS: usize> Mul<&Vector<T, COLS>> for Matrix<T
 }
 
 impl<T, const ROWS: usize, const COLS: usize> Mul<Vector<T, COLS>> for &Matrix<T, ROWS, COLS>
-  where T: Mul<Output = T> + AddAssign + Default + Copy
+  where T: Add<Output = T> + Mul<Output = T> + Default + Copy
 {
   type Output = Vector<T, ROWS>;
 
@@ -258,7 +258,7 @@ impl<T, const ROWS: usize, const COLS: usize> Mul<Vector<T, COLS>> for &Matrix<T
       for i in 0..ROWS {
           let mut x = T::default();
           for j in 0..COLS {
-              x += self.data[i][j] * other.data[j]
+              x = x + self.data[i][j] * other.data[j]
           }
           result.data[i] = x;
       }
@@ -267,7 +267,7 @@ impl<T, const ROWS: usize, const COLS: usize> Mul<Vector<T, COLS>> for &Matrix<T
 }
 
 impl<T, const ROWS: usize, const COLS: usize> Mul<&Vector<T, COLS>> for &Matrix<T, ROWS, COLS>
-  where T: Mul<Output = T> + AddAssign + Default + Copy
+  where T: Add<Output = T> + Mul<Output = T> + Default + Copy
 {
   type Output = Vector<T, ROWS>;
 
@@ -276,7 +276,7 @@ impl<T, const ROWS: usize, const COLS: usize> Mul<&Vector<T, COLS>> for &Matrix<
       for i in 0..ROWS {
           let mut x = T::default();
           for j in 0..COLS {
-              x += self.data[i][j] * other.data[j]
+              x = x + self.data[i][j] * other.data[j]
           }
           result.data[i] = x;
       }
@@ -285,7 +285,7 @@ impl<T, const ROWS: usize, const COLS: usize> Mul<&Vector<T, COLS>> for &Matrix<
 }
 
 /* multiple by scalar */
-impl<T: Mul<Output = T> + AddAssign + Default + Copy, const ROWS: usize, const COLS: usize> Mul<T> for Matrix<T, ROWS, COLS> {
+impl<T: Mul<Output = T> + Default + Copy, const ROWS: usize, const COLS: usize> Mul<T> for Matrix<T, ROWS, COLS> {
   type Output = Matrix<T, ROWS, COLS>;
 
   fn mul(self, other: T) -> Self::Output {
@@ -299,7 +299,7 @@ impl<T: Mul<Output = T> + AddAssign + Default + Copy, const ROWS: usize, const C
   }
 }
 
-impl<T: Mul<Output = T> + AddAssign + Default + Copy, const ROWS: usize, const COLS: usize> Mul<T> for &Matrix<T, ROWS, COLS> {
+impl<T: Mul<Output = T> + Default + Copy, const ROWS: usize, const COLS: usize> Mul<T> for &Matrix<T, ROWS, COLS> {
   type Output = Matrix<T, ROWS, COLS>;
 
   fn mul(self, other: T) -> Self::Output {
@@ -314,7 +314,7 @@ impl<T: Mul<Output = T> + AddAssign + Default + Copy, const ROWS: usize, const C
 }
 
 /* divide by scalar */
-impl<T: Div<Output = T> + AddAssign + Default + Copy, const ROWS: usize, const COLS: usize> Div<T> for Matrix<T, ROWS, COLS> {
+impl<T: Div<Output = T> + Default + Copy, const ROWS: usize, const COLS: usize> Div<T> for Matrix<T, ROWS, COLS> {
   type Output = Matrix<T, ROWS, COLS>;
 
   fn div(self, other: T) -> Self::Output {
@@ -328,7 +328,7 @@ impl<T: Div<Output = T> + AddAssign + Default + Copy, const ROWS: usize, const C
   }
 }
 
-impl<T: Div<Output = T> + AddAssign + Default + Copy, const ROWS: usize, const COLS: usize> Div<T> for &Matrix<T, ROWS, COLS> {
+impl<T: Div<Output = T> + Default + Copy, const ROWS: usize, const COLS: usize> Div<T> for &Matrix<T, ROWS, COLS> {
   type Output = Matrix<T, ROWS, COLS>;
 
   fn div(self, other: T) -> Self::Output {
@@ -472,7 +472,7 @@ impl<T: Default + Copy, const ROWS: usize, const COLS: usize> Matrix<T, ROWS, CO
   }
 }
 
-impl<T: Float + Default + std::ops::AddAssign, const ROWS: usize, const COLS: usize> Matrix<T, ROWS, COLS> {
+impl<T: Float + Default, const ROWS: usize, const COLS: usize> Matrix<T, ROWS, COLS> {
 
   pub fn inverse (&self) -> Option<Matrix<T, ROWS, COLS>> {
     if ROWS != COLS { return None; }

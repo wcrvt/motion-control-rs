@@ -1,5 +1,5 @@
 use num_traits;
-use super::integrator;
+use crate::mclib::integrator;
 
 #[derive(Debug, Copy, Clone)]
 pub struct VelocityBased <T> {
@@ -20,7 +20,7 @@ impl<T: num_traits::Float> VelocityBased <T> {
       jm,
       g: [jm * T::from(3.0).unwrap() * bandwidth.powi(1), jm * T::from(3.0).unwrap() * bandwidth.powi(2), jm * bandwidth.powi(3)],
       itg: [integrator::FirstOrder::new(ts); 3],
-      py: [T::one(); 3],
+      py: [T::zero(); 3],
       out_z1: T::zero(),
     }
   }

@@ -2,7 +2,7 @@ use std::borrow::Borrow;
 use std::ops::{Add, AddAssign, Div, DivAssign, Index, IndexMut, Mul, MulAssign, Sub, SubAssign};
 use super::matrix::*;
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Copy)]
 pub struct Vector<T, const ROWS: usize> {
     pub data: [T; ROWS],
 }
@@ -102,32 +102,32 @@ impl<T, S: Borrow<Vector<T, ROWS>>, const ROWS: usize> Sub<S> for &Vector<T, ROW
 }
 
 /* multiple by vector (dot product) */
-impl<T: Mul<Output = T> + AddAssign + Default + Copy, const ROWS: usize> Mul<&Self> for Vector<T, ROWS> {
+impl<T: Add<Output = T> + Mul<Output = T> + Default + Copy, const ROWS: usize> Mul<&Self> for Vector<T, ROWS> {
   type Output = T;
 
   fn mul(self, other: &Self) -> Self::Output {
     let mut result: T = T::default();
     for i in 0..ROWS {
-      result += self.data[i] * other.data[i];
+      result = result + self.data[i] * other.data[i];
     }
     result
   }
 }
 
-impl<T: Mul<Output = T> + AddAssign + Default + Copy, const ROWS: usize> Mul<&Self> for &Vector<T, ROWS> {
+impl<T: Add<Output = T> + Mul<Output = T> + Default + Copy, const ROWS: usize> Mul<&Self> for &Vector<T, ROWS> {
   type Output = T;
 
   fn mul(self, other: &Self) -> Self::Output {
     let mut result: T = T::default();
     for i in 0..ROWS {
-      result += self.data[i] * other.data[i];
+      result = result + self.data[i] * other.data[i];
     }
     result
   }
 }
 
 /* multiple by scalar */
-impl<T: Mul<Output = T> + AddAssign + Default + Copy, const ROWS: usize> Mul<T> for Vector<T, ROWS> {
+impl<T: Mul<Output = T> + Default + Copy, const ROWS: usize> Mul<T> for Vector<T, ROWS> {
   type Output = Vector<T, ROWS>;
 
   fn mul(self, other: T) -> Self::Output {
@@ -139,7 +139,7 @@ impl<T: Mul<Output = T> + AddAssign + Default + Copy, const ROWS: usize> Mul<T> 
   }
 }
 
-impl<T: Mul<Output = T> + AddAssign + Default + Copy, const ROWS: usize> Mul<T> for &Vector<T, ROWS> {
+impl<T: Mul<Output = T> + Default + Copy, const ROWS: usize> Mul<T> for &Vector<T, ROWS> {
   type Output = Vector<T, ROWS>;
 
   fn mul(self, other: T) -> Self::Output {
@@ -152,7 +152,7 @@ impl<T: Mul<Output = T> + AddAssign + Default + Copy, const ROWS: usize> Mul<T> 
 }
 
 /* divide by scalar */
-impl<T: Div<Output = T> + AddAssign + Default + Copy, const ROWS: usize> Div<T> for Vector<T, ROWS> {
+impl<T: Div<Output = T> + Default + Copy, const ROWS: usize> Div<T> for Vector<T, ROWS> {
   type Output = Vector<T, ROWS>;
 
   fn div(self, other: T) -> Self::Output {
@@ -164,7 +164,7 @@ impl<T: Div<Output = T> + AddAssign + Default + Copy, const ROWS: usize> Div<T> 
   }
 }
 
-impl<T: Div<Output = T> + AddAssign + Default + Copy, const ROWS: usize> Div<T> for &Vector<T, ROWS> {
+impl<T: Div<Output = T> + Default + Copy, const ROWS: usize> Div<T> for &Vector<T, ROWS> {
   type Output = Vector<T, ROWS>;
 
   fn div(self, other: T) -> Self::Output {
@@ -182,58 +182,58 @@ impl<T: Div<Output = T> + AddAssign + Default + Copy, const ROWS: usize> Div<T> 
 
 /* add */
 impl<T, S, const ROWS: usize> AddAssign<S> for Vector<T, ROWS>
-  where T: AddAssign + Default + Copy, S: Borrow<Self>
+  where T: Add<Output = T> + Default + Copy, S: Borrow<Self>
 {
   fn add_assign(&mut self, other: S) {
     let other = other.borrow();
     for i in 0..ROWS {
-      self.data[i] += other.data[i];
+      self.data[i] = self.data[i] + other.data[i];
     }
   }
 }
 
 /* Substraction */
 impl<T, S, const ROWS: usize> SubAssign<S> for Vector<T, ROWS>
-  where T: SubAssign + Default + Copy, S: Borrow<Self>
+  where T: Sub<Output = T> + Default + Copy, S: Borrow<Self>
 {
   fn sub_assign(&mut self, other: S) {
     let other = other.borrow();
     for i in 0..ROWS {
-      self.data[i] -= other.data[i];
+      self.data[i] = self.data[i] - other.data[i];
     }
   }
 }
 
 /* multiply by scalar*/
 impl<T, const ROWS: usize> MulAssign<T> for Vector<T, ROWS>
-  where T: MulAssign + Default + Copy
+  where T: Mul<Output = T> + Default + Copy
 {
   fn mul_assign(&mut self, other: T) {
     for i in 0..ROWS {
-      self.data[i] *= other
+      self.data[i] = self.data[i] * other;
     }
   }
 }
 
 /* divide by scalar*/
 impl<T, const ROWS: usize> DivAssign<T> for Vector<T, ROWS>
-  where T: DivAssign + Default + Copy
+  where T: Div<Output = T> + Default + Copy
 {
   fn div_assign(&mut self, other: T) {
     for i in 0..ROWS {
-      self.data[i] /= other
+      self.data[i] = self.data[i] / other;
     }
   }
 }
 
 /* products */
 impl<T, const ROWS: usize> Vector<T, ROWS>
-  where T: Add<Output = T> + Mul<Output = T> + AddAssign + Default + Copy
+  where T: Add<Output = T> + Mul<Output = T> + Default + Copy
 {
   pub fn dot (self, other: &Self) -> T {
     let mut ret: T = T::default();
     for i in 0..ROWS {
-        ret += self[i] * other[i];
+        ret = ret + self[i] * other[i];
     }
     ret
   }

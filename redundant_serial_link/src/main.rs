@@ -3,7 +3,7 @@ use std::error::Error;
 use digitalservo::plant::manipulator;
 
 use digitalservo::data_storage::DataStorage;
-use digitalservo::mclib::disturbance_observer2 as dob;
+use digitalservo::mclib::disturbance_observer as dob;
 
 fn main()-> Result<(), Box<dyn Error>>  {
 
@@ -25,9 +25,9 @@ fn main()-> Result<(), Box<dyn Error>>  {
 
     let g: f64 = 500.0;
     let mut dob = [
-        dob::VelocityBased::new(TS, kt[0], jm[0], g),
-        dob::VelocityBased::new(TS, kt[1], jm[1], g),
-        dob::VelocityBased::new(TS, kt[2], jm[2], g),
+        dob::VelocityBased::<_, 1>::new(TS, kt[0], jm[0], g),
+        dob::VelocityBased::<_, 1>::new(TS, kt[1], jm[1], g),
+        dob::VelocityBased::<_, 1>::new(TS, kt[2], jm[2], g),
     ];
 
     //Logging

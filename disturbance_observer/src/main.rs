@@ -33,7 +33,6 @@ fn main()-> Result<(), Box<dyn std::error::Error>> {
     let mut tau_dis: f64;
     let mut tau_dis_est: [f64; TEST_NUM] = [0.0; TEST_NUM];
 
-
     for _ in 0..SLOOP_NUM {
 
         /* disturbance observer */
@@ -42,7 +41,7 @@ fn main()-> Result<(), Box<dyn std::error::Error>> {
         tau_dis_est[2] = dob2.update(iq_ref, plant.d1x);
         tau_dis_est[3] = dob3.update(iq_ref, plant.d1x);
 
-        iq_ref = -1.0 + (2.0 * std::f64::consts::PI * 3.0 * t);
+        iq_ref = -1.0;// + (2.0 * std::f64::consts::PI * 3.0 * t);
         tau = kt * iq_ref;
 
         tau_dis = 1.0;
