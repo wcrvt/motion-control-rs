@@ -218,15 +218,15 @@ impl<T, const ROWS: usize, const COLS: usize> Mul<Vector<T, COLS>> for Matrix<T,
   type Output = Vector<T, ROWS>;
 
   fn mul(self, other: Vector<T, COLS>) -> Self::Output {
-      let mut result: Vector<T, ROWS> = Vector::<T, ROWS>::new();
-      for i in 0..ROWS {
-          let mut x = T::default();
-          for j in 0..COLS {
-              x = x + self.data[i][j] * other.data[j]
-          }
-          result.data[i] = x;
+    let mut result: Vector<T, ROWS> = Vector::<T, ROWS>::new();
+    for i in 0..ROWS {
+      let mut x = T::default();
+      for j in 0..COLS {
+        x = x + self.data[i][j] * other.data[j]
       }
-      result
+      result.data[i] = x;
+    }
+    result
   }
 }
 
@@ -236,15 +236,15 @@ impl<T, const ROWS: usize, const COLS: usize> Mul<&Vector<T, COLS>> for Matrix<T
   type Output = Vector<T, ROWS>;
 
   fn mul(self, other: &Vector<T, COLS>) -> Self::Output {
-      let mut result: Vector<T, ROWS> = Vector::<T, ROWS>::new();
-      for i in 0..ROWS {
-          let mut x = T::default();
-          for j in 0..COLS {
-              x = x + self.data[i][j] * other.data[j]
-          }
-          result.data[i] = x;
+    let mut result: Vector<T, ROWS> = Vector::<T, ROWS>::new();
+    for i in 0..ROWS {
+      let mut x = T::default();
+      for j in 0..COLS {
+        x = x + self.data[i][j] * other.data[j]
       }
-      result
+      result.data[i] = x;
+    }
+    result
   }
 }
 
@@ -254,15 +254,15 @@ impl<T, const ROWS: usize, const COLS: usize> Mul<Vector<T, COLS>> for &Matrix<T
   type Output = Vector<T, ROWS>;
 
   fn mul(self, other: Vector<T, COLS>) -> Self::Output {
-      let mut result: Vector<T, ROWS> = Vector::<T, ROWS>::new();
-      for i in 0..ROWS {
-          let mut x = T::default();
-          for j in 0..COLS {
-              x = x + self.data[i][j] * other.data[j]
-          }
-          result.data[i] = x;
+    let mut result: Vector<T, ROWS> = Vector::<T, ROWS>::new();
+    for i in 0..ROWS {
+      let mut x = T::default();
+      for j in 0..COLS {
+        x = x + self.data[i][j] * other.data[j]
       }
-      result
+      result.data[i] = x;
+    }
+    result
   }
 }
 
