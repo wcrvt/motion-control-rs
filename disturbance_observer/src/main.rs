@@ -26,10 +26,10 @@ fn main()-> Result<(), Box<dyn std::error::Error>> {
 
     //Disturbance observer
     let g: f64 = 100.0;
-    let mut dob0 = disturbance_observer::VelocityBased::<_, 0>::new(TS, kt, jm, g);
-    let mut dob1 = disturbance_observer::VelocityBased::<_, 1>::new(TS, kt, jm, g);
-    let mut dob2 = disturbance_observer::VelocityBased::<_, 2>::new(TS, kt, jm, g);
-    let mut dob3 = disturbance_observer::VelocityBased::<_, 3>::new(TS, kt, jm, g);
+    let mut dob0 = disturbance_observer::VelocityBased::<_, 2>::new(TS, kt, jm, g);
+    let mut dob1 = disturbance_observer::VelocityBased::<_, 3>::new(TS, kt, jm, g);
+    let mut dob2 = disturbance_observer::VelocityBased::<_, 4>::new(TS, kt, jm, g);
+    let mut dob3 = disturbance_observer::VelocityBased::<_, 5>::new(TS, kt, jm, g);
 
     //Control signal
     let mut iq_ref: f64 = 0.0;
