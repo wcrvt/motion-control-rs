@@ -1,7 +1,7 @@
 use num_traits;
 
 #[derive(Debug, Copy, Clone)]
-pub struct FirstOrder <T> {
+pub struct VelocityBased <T> {
   z_z1: T,
   u_z1: T,
   pub ts: T,
@@ -11,7 +11,7 @@ pub struct FirstOrder <T> {
   coef: [T; 2]
 }
 
-impl<T: num_traits::Float> FirstOrder <T> {
+impl<T: num_traits::Float> VelocityBased <T> {
   pub fn new(ts: T, kt: T, jm: T, bandwidth: T) -> Self{
     let t2: T = T::from(2.0).unwrap();
     let divider: T = t2 + bandwidth * ts;

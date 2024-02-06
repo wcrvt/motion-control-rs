@@ -2,7 +2,7 @@ use num_traits;
 use super::integrator;
 
 #[derive(Debug, Copy, Clone)]
-pub struct FirstOrder <T> {
+pub struct VelocityBased <T> {
   pub ts: T,
   pub kt: T,
   pub jm: T,
@@ -12,7 +12,7 @@ pub struct FirstOrder <T> {
   out_z1: T,
 }
 
-impl<T: num_traits::Float> FirstOrder <T> {
+impl<T: num_traits::Float> VelocityBased <T> {
   pub fn new(ts: T, kt: T, jm: T, bandwidth: T) -> Self{
     Self{
       ts,

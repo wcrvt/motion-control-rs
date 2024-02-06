@@ -34,10 +34,10 @@ fn main()-> Result<(), Box<dyn Error>>  {
 
   //disturbance observer
   let g: f64 = 500.0;
-  let mut dob: [dob::FirstOrder<f64>; 3] = [
-    dob::FirstOrder::new(TS, 1.0, jb[0], g),
-    dob::FirstOrder::new(TS, 1.0, jb[1], g),
-    dob::FirstOrder::new(TS, 1.0, jb[2], g)
+  let mut dob = [
+    dob::VelocityBased::new(TS, 1.0, jb[0], g),
+    dob::VelocityBased::new(TS, 1.0, jb[1], g),
+    dob::VelocityBased::new(TS, 1.0, jb[2], g)
   ];
 
   //quaternion observer
