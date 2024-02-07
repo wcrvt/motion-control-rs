@@ -7,7 +7,8 @@ pub struct FreeFilter<T, const P: usize, const Z: usize> where [(); P - 1]: {
   b: Vector<T, {P - 1}>,
   c: Vector<T, {P - 1}>,
   x: Vector<T, {P - 1}>,
-  ts: T,
+  pz1: Vector<T, {P - 1}>,
+  ts_h: T,
 }
 
 impl <T: Float + Default + std::fmt::Debug, const P: usize, const Z: usize> FreeFilter<T, P, Z> where [(); P - 1]: {
@@ -18,10 +19,12 @@ impl <T: Float + Default + std::fmt::Debug, const P: usize, const Z: usize> Free
     let mut a: Matrix<T, {P - 1}, {P - 1}> = Matrix::new();
     let mut b: Vector<T, {P - 1}> = Vector::new();
     let mut c: Vector<T, {P - 1}> = Vector::new();
+    let pz1: Vector<T, {P - 1}> = Vector::new();
     let x: Vector<T, {P - 1}> = Vector::new();
+    let ts_h = ts * T::from(0.5).unwrap();
 
-    let numer = Vector::from(numer) / denom[0];
-    let denom = Vector::from(denom) / denom[0];
+    let numer: Vector<T, Z> = Vector::from(numer) / denom[0];
+    let denom: Vector<T, P> = Vector::from(denom) / denom[0];
 
     for i in 0..(P - 2) {
       a[i][i + 1] = T::one();
@@ -34,12 +37,14 @@ impl <T: Float + Default + std::fmt::Debug, const P: usize, const Z: usize> Free
 
     b[P - 2] = T::one();
 
-    Self { a, b, c, x, ts }
+    Self { a, b, c, pz1, x, ts_h }
   }
 
   pub fn update(&mut self, u: T) -> T {
-    self.x += (&self.a * &self.x + &self.b * u) * self.ts;
+    let p: Vector<T, {P - 1}> = &self.a * &self.x + &self.b * u;
+    self.x += (&p + &self.pz1) * self.ts_h;
     let y: T = self.c.dot(&self.x);
+    self.pz1 = p;
     y
   }
 }

@@ -1,5 +1,4 @@
 use num_traits;
-
 use crate::mclib::{integrator, differentiator};
 
 #[derive(Debug, Copy, Clone)]
@@ -46,7 +45,7 @@ pub struct PDController<T> {
   kd: T,
   err_p: T,
   err_d: T,
-  differentiator_err: differentiator::FirstOrder<T>
+  differentiator_err: differentiator::native::FirstOrder<T>
 }
 
 impl <T: num_traits::Float> PDController<T> {
@@ -56,7 +55,7 @@ impl <T: num_traits::Float> PDController<T> {
       kd,
       err_p: T::zero(),
       err_d: T::zero(),
-      differentiator_err: differentiator::FirstOrder::new(ts, g_diff)
+      differentiator_err: differentiator::native::FirstOrder::new(ts, g_diff)
     }
   }
   pub fn calc(&mut self, reference: T, response: T) -> T {
