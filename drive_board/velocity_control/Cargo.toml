@@ -7,7 +7,4 @@ edition = "2021"
 
 [dependencies]
 num-traits = "0.2.17"
-regex = "1.10.2"
-rustfft = "6.1.0"
-serde = { version = "1.0.193", features = ["derive"] }
 serialport = "4.3.0"

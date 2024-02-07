@@ -1,0 +1,158 @@
+%以下が文書の先頭に記述するコマンドです．
+\documentclass[10pt]{article}
+\usepackage[dvipdfmx]{graphicx}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage[varg]{txfonts}
+\usepackage{comment}
+\usepackage{multirow}
+ \usepackage{bm}
+ \usepackage{color}
+\special{pdf: minorversion=6}
+
+\setlength{\oddsidemargin}{-10.4mm}    
+\setlength{\evensidemargin}{-10.4mm}
+\setlength{\textwidth}{180mm}     
+\setlength{\topmargin}{-25mm}     
+\setlength{\textheight}{265mm} 
+
+
+\makeatletter
+\long\def\@makecaption#1#2{%
+\vskip\abovecaptionskip%
+\sbox\@tempboxa{#1. #2}% Original
+%\sbox\@tempboxa{#2}
+\ifdim \wd\@tempboxa >\hsize%
+#1. #2\par % Original
+%#1 #2\par
+\else
+\global \@minipagefalse
+\hb@xt@\hsize{\hfil\box\@tempboxa\hfil}%
+\fi
+\vskip\belowcaptionskip}%
+\makeatother
+
+\begin{document}
+\begin{center}
+	\textbf
+	{
+		\huge{Algorithms for System Identification Tool}\\
+	}
+ 	\vspace{5mm}
+
+\end{center}
+
+\section{Least Squares Method}
+Let us consider a system
+\begin{align}
+y[{\rm k}+1] &= Ax[{\rm k}] + Bu[{\rm k}],
+\end{align}
+where $A$ and $B$ are the system matrix and input matrix, $u, x, y\in\mathbb{R}$ stand for the input, state, and output, and a prediction system
+\begin{align}
+\hat{y}[{\rm k}+1] = \theta^{\mathrm T}[{\rm k}]\phi[{\rm k}],
+\end{align}
+where $\phi$ and $\theta$ mean the parameter vectors, the former is available to sense  and the latter is to be observed.
+The purpose of a least squares method is to minimize a cost function
+\begin{align}
+J(\theta) = \sum \left(y[{\rm k}] - \hat{y}[{\rm k}]\right)^2.	\label{math:lsm_theta}
+\end{align}
+If a dataset was provided, you can find $\hat{\theta}$ by
+\begin{align}
+\hat{\theta} =\left(\sum \phi[{\rm k}]\phi^{\mathrm T}[{\rm k}]\right)^{-1}\sum \phi[{\rm k}] y[{\rm k}],
+\end{align}
+
+\subsection{ARX model} 
+For example, a prediction system using an ARX model is constructed as
+\begin{align}
+x[{\rm k}+1] = a_0x[{\rm k}] + a_1x[{\rm k}-1] + \cdots + a_{\rm n}x[{\rm k-n}] + b_0u[{\rm k}] + \cdots + b_{\rm m}u[{\rm k-m}],
+\end{align}
+and the parameters we want are $a_{\rm k}\ ({\rm k}\in[0, {\rm n}])$ and $b_{\rm k}\ ({\rm k}\in[0, {\rm n}])$.
+The parameter can be obtained by solving \eqref{math:lsm_theta} setting
+\begin{align}
+y[k+1] &= x[{\rm k}+1]\\
+\theta&=\begin{bmatrix}a_0 & \cdots & a_{\rm n} & b_{0} & \cdots & b_{\rm m}\end{bmatrix}^{\rm T}\\
+\phi&=\begin{bmatrix}x[k] & \cdots & x[{\rm k-n}] & u[k] & \cdots & u[{\rm k-m}]\end{bmatrix}^{\rm T}.
+\end{align}
+
+\subsection{Whitebox model}
+If a whitebox model was provided as
+\begin{align}
+y[k+1] = a_{\rm 0}x_0[k] + a_{\rm 1} x_1[k] + \cdots + a_{\rm n} x_1[{\rm n}],
+\end{align}
+where $a_{\rm k}\ ({\rm k}\in[0, {\rm n}])$ are the parameter and $x_{\rm k}\ ({\rm k}\in[0, {\rm n}])$ are available, the parameters can be obtained by solving \eqref{math:lsm_theta} setting
+\begin{align}
+\theta&=\begin{bmatrix}a_0 & \cdots & a_{\rm n} \end{bmatrix}^{\rm T}\\
+\phi&=\begin{bmatrix}x_0[k] & \cdots & x_{\rm n}[k]\end{bmatrix}^{\rm T}.
+\end{align}
+
+\subsection{Polynomial model} 
+If a polynomial model was provided as
+\begin{align}
+y[k] = a_{\rm n}x^{\rm n} + a_{\rm n-1}x^{\rm n} + \cdots + a_1x + a_0
+\end{align}
+where $a_{\rm k}\ ({\rm k}\in[0, {\rm n}])$ are the parameter, the parameters can be obtained by solving \eqref{math:lsm_theta} setting
+\begin{align}
+\theta&=\begin{bmatrix}a_{\rm n} & \cdots & a_1 & a_0 \end{bmatrix}^{\rm T}\\
+\phi&=\begin{bmatrix}x^{\rm n} & \cdots & x & 1 \end{bmatrix}^{\rm T}.
+\end{align}
+
+\newpage
+
+\section{Kalman Filter}
+
+Let us consider a state-space representation
+\begin{align}
+\theta[{\rm k}+1] &= \theta[{\rm k}] + v\\
+y[{\rm k}] &= \phi^{\mathrm T}[{\rm k}]\theta[{\rm k}] + w,
+\end{align}
+where $\phi$ is the observation matrix and $\theta, y, v$, and $w$ denote the parameter to be estimate, available output, process noise, and observation noise.
+This system stands for the parameter fluctuate like random walk.
+A Kalman filter estimates a parameter following these steps:
+\begin{itemize}
+\item Prediction step
+\begin{align}
+\hat{\theta}_{\rm p}[{\rm k}+1] &= \hat{\theta}[{\rm k}]\\
+P_{\rm p}[{\rm k} + 1] &= P_{\rm p}[{\rm k}] + Q
+\end{align}
+\end{itemize}
+\begin{itemize}
+\item Filtering step
+\begin{align}
+e[{\rm }k] &= y[{\rm k}] - \phi^{\mathrm T}[{\rm k}]\theta[{\rm k}]\\
+S[{\rm k}]&= R + \phi^{\mathrm T}[{\rm k}]P_{\rm p}[k]\phi[{\rm k}]\\
+\hat{\theta}[{\rm k}+1] &= \hat{\theta}_{\rm p}[{\rm k}] + P_{\rm p}[{\rm 
+k}]\phi[{\rm k}]S[{\rm k}]^{-1}e[{\rm k}]\\
+P[{\rm k} + 1] &= P_{\rm p}[{\rm k}] - P_{\rm p}[{\rm 
+k}]\phi[{\rm k}]S[{\rm k}]^{-1}\phi^{\mathrm T}[{\rm k}]P_{\rm p}[{\rm 
+k}]
+\end{align}
+\end{itemize}
+Here, $P, Q, R$, and $S$ denotes the auto-covariance, covariance of process noise and observation noise, and covariance of observation, and the subscript $_{\rm p}$ stands for the predicted value.
+
+
+
+\subsection{ARX model} 
+The parameter can be estimated by setting
+\begin{align}
+y[k+1] &= x[{\rm k}+1]\\
+\theta&=\begin{bmatrix}a_0 & \cdots & a_{\rm n} & b_{0} & \cdots & b_{\rm m}\end{bmatrix}^{\rm T}\\
+\phi&=\begin{bmatrix}x[k] & \cdots & x[{\rm k-n}] & u[k] & \cdots & u[{\rm k-m}]\end{bmatrix}^{\rm T}.
+\end{align}
+
+\subsection{Whitebox model}
+The parameter can be estimated by setting
+\begin{align}
+\theta&=\begin{bmatrix}a_0 & \cdots & a_{\rm n} \end{bmatrix}^{\rm T}\\
+\phi&=\begin{bmatrix}x_0[k] & \cdots & x_{\rm n}[k]\end{bmatrix}^{\rm T}.
+\end{align}
+
+\subsection{Polynomial model} 
+The parameter can be estimated by setting
+\begin{align}
+\theta&=\begin{bmatrix}a_{\rm n} & \cdots & a_1 & a_0 \end{bmatrix}^{\rm T}\\
+\phi&=\begin{bmatrix}x^{\rm n} & \cdots & x & 1 \end{bmatrix}^{\rm T}.
+\end{align}
+
+
+
+\end{document}
