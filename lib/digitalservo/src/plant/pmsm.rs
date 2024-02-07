@@ -1,5 +1,4 @@
-use num_traits;
-use crate::mclib::integrator;
+use num_traits::Float;
 
 #[derive(Debug, Copy, Clone)]
 pub struct MotionState<T>{
@@ -8,7 +7,7 @@ pub struct MotionState<T>{
 }
 
 impl <T> MotionState<T>
-  where T: num_traits::Float
+  where T: Float
 {
   pub fn new() -> Self {
     Self {
@@ -39,7 +38,7 @@ pub struct AlphaBetaState<T>{
   pub z: T,
 }
 
-impl <T: num_traits::Float> ThreePhaseState <T> {
+impl <T: Float> ThreePhaseState <T> {
   pub fn new() -> Self {
     Self{
       u: T::zero(),
@@ -145,13 +144,10 @@ pub struct PMSM <T> {
   pub omega: MotionState<T>,
   pub theta: MotionState<T>,
   pub torque: T,
-  integrator_d: integrator::FirstOrder<T>,
-  integrator_q: integrator::FirstOrder<T>,
-  integrator_omega: integrator::FirstOrder<T>,
-  integrator_theta: integrator::FirstOrder<T>,
+  ts: T,
 }
 
-impl <T: num_traits::Float> PMSM <T>
+impl <T: Float> PMSM <T>
 {
   pub fn new(ts: T) -> Self{
     Self {
@@ -167,10 +163,7 @@ impl <T: num_traits::Float> PMSM <T>
       np: 1,
       phi_m: T::zero(),
       torque: T::zero(),
-      integrator_d: integrator::FirstOrder::new(ts),
-      integrator_q: integrator::FirstOrder::new(ts),
-      integrator_omega: integrator::FirstOrder::new(ts),
-      integrator_theta: integrator::FirstOrder::new(ts),
+      ts,
     }
   }
 
@@ -212,8 +205,8 @@ impl <T: num_traits::Float> PMSM <T>
     v_act.d = v_dq.d + self.omega.e * self.l_dq.q;
     v_act.q = v_dq.q - self.omega.e * self.l_dq.d - self.omega.e * self.phi_m;
     
-    self.i_dq.d = self.integrator_d.update((v_act.d - self.r_dq.d * self.i_dq.d) / self.l_dq.d);
-    self.i_dq.q = self.integrator_q.update((v_act.q - self.r_dq.q * self.i_dq.q) / self.l_dq.q);
+    self.i_dq.d = (v_act.d - self.r_dq.d * self.i_dq.d) / self.l_dq.d * self.ts;
+    self.i_dq.q = (v_act.q - self.r_dq.q * self.i_dq.q) / self.l_dq.q * self.ts;
     self.i_uvw = self.i_dq.transform_uvw(self.theta.e);
 
     let np_t: T = T::from(self.np).unwrap();
@@ -222,8 +215,8 @@ impl <T: num_traits::Float> PMSM <T>
     let tau_m: T = np_t * self.phi_m * self.i_dq.q;
     self.torque = tau_r + tau_m;
 
-    self.theta.m = self.integrator_theta.update(self.omega.m);
-    self.omega.m = self.integrator_omega.update(self.acc.m);
+    self.theta.m = self.omega.m * self.ts;
+    self.omega.m = self.acc.m * self.ts;
     self.acc.m = (self.torque + tau_dis) / self.jm;
 
     self.theta.e = self.theta.m / np_t;

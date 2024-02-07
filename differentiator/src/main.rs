@@ -1,4 +1,4 @@
-use digitalservo::mclib::differentiator;
+use digitalservo::signal::differentiator;
 use digitalservo::data_storage::DataStorage;
 
 

@@ -1,4 +1,4 @@
-use digitalservo::mclib::disturbance_observer;
+use digitalservo::observer::disturbance_observer;
 use digitalservo::plant::motor;
 use digitalservo::data_storage::DataStorage;
 

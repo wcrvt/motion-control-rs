@@ -1,9 +1,9 @@
 use std::error::Error;
 
-use digitalservo::plant::rigid_body;
 use digitalservo::data_storage::DataStorage;
-use digitalservo::mclib::disturbance_observer as dob;
-use digitalservo::mclib::quaternion_observer;
+use digitalservo::plant::rigid_body;
+use digitalservo::observer::disturbance_observer as dob;
+use digitalservo::observer::quaternion_observer;
 
 fn main()-> Result<(), Box<dyn Error>>  {
   

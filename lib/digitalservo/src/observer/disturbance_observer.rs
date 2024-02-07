@@ -1,5 +1,3 @@
-pub mod native;
-
 use num_traits::Float;
 use crate::algebra::{vector::Vector, matrix::Matrix};
 
@@ -32,7 +30,7 @@ impl<T: Float + Default, const ORDER: usize> VelocityBased <T, ORDER> where [();
     /* see https://digitalservo.jp/library/linear-control-design/observer-design/minimal-order-observer/ */
 
     //system matrix
-    let a_11: Matrix<T, {ORDER + 1}, {ORDER + 1}> = generate_disturbance_matrix::<T, {ORDER + 1}>();
+    let a_11: Matrix<T, {ORDER + 1}, {ORDER + 1}> = jordan_block::<T, {ORDER + 1}>(T::zero());
     let a_12: Vector<T, {ORDER + 1}> = Vector::new();
     let mut a_21: Vector<T, {ORDER + 1}> = Vector::new();
     a_21[0] = T::one() / jm;
@@ -61,7 +59,7 @@ impl<T: Float + Default, const ORDER: usize> VelocityBased <T, ORDER> where [();
   }
 
   pub fn jm(mut self, jm: T) -> Self {
-    let a_11: Matrix<T, {ORDER + 1}, {ORDER + 1}> = generate_disturbance_matrix::<T, {ORDER + 1}>();
+    let a_11: Matrix<T, {ORDER + 1}, {ORDER + 1}> = jordan_block::<T, {ORDER + 1}>(T::zero());
     let mut a_21: Vector<T, {ORDER + 1}> = Vector::new();
     a_21[0] = - T::one() / jm;
 
@@ -82,11 +80,10 @@ impl<T: Float + Default, const ORDER: usize> VelocityBased <T, ORDER> where [();
 }
 
 
-fn generate_disturbance_matrix<T: Float + Default, const ORDER: usize>() -> Matrix::<T, ORDER, ORDER> {
+fn jordan_block<T: Float + Default, const ORDER: usize> (lambda: T) -> Matrix::<T, ORDER, ORDER> {
   let mut ret: Matrix<T, ORDER, ORDER> = Matrix::<T, ORDER, ORDER>::new();
-  for i in 0..ORDER-1 {
-    ret[i][i+1] = T::one();
-  }
+  for i in 0..ORDER-1 { ret[i][i+1] = T::one(); }
+  for i in 0..ORDER { ret[i][i] = lambda }
   ret
 }
 

@@ -1,5 +1,5 @@
 use num_traits;
-use crate::mclib::{integrator, differentiator};
+use crate::signal::{integrator, differentiator};
 
 #[derive(Debug, Copy, Clone)]
 pub struct PIController<T> {
@@ -45,17 +45,17 @@ pub struct PDController<T> {
   kd: T,
   err_p: T,
   err_d: T,
-  differentiator_err: differentiator::native::FirstOrder<T>
+  differentiator_err: differentiator::Differentiator<T, 1, 0>
 }
 
-impl <T: num_traits::Float> PDController<T> {
+impl <T: num_traits::Float + Default> PDController<T> {
   pub fn new(kp: T, kd: T, g_diff: T, ts: T) -> Self {
     Self {
       kp,
       kd,
       err_p: T::zero(),
       err_d: T::zero(),
-      differentiator_err: differentiator::native::FirstOrder::new(ts, g_diff)
+      differentiator_err: differentiator::Differentiator::new(ts, g_diff)
     }
   }
   pub fn calc(&mut self, reference: T, response: T) -> T {

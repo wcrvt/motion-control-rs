@@ -3,9 +3,9 @@ use std::error::Error;
 
 use digitalservo::plant::motor as plant;
 use digitalservo::data_storage::DataStorage;
-use digitalservo::mclib::disturbance_observer as dob;
-use digitalservo::mclib::integrator;
 use digitalservo::mclib::controller;
+use digitalservo::observer::disturbance_observer as dob;
+use digitalservo::signal::integrator;
 
 fn main() -> Result<(), Box<dyn Error>> {
 

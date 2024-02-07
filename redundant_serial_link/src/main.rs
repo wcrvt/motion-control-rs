@@ -1,9 +1,8 @@
 use std::error::Error;
 
-use digitalservo::plant::manipulator;
-
 use digitalservo::data_storage::DataStorage;
-use digitalservo::mclib::disturbance_observer as dob;
+use digitalservo::plant::manipulator;
+use digitalservo::observer::disturbance_observer as dob;
 
 fn main()-> Result<(), Box<dyn Error>>  {
 
