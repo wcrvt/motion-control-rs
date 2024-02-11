@@ -1,11 +1,10 @@
 use std::error::Error;
 
 use digitalservo::data_storage::DataStorage;
-use digitalservo::plant::pendulum;
 use digitalservo::observer::disturbance_observer as dob;
+use digitalservo::plant::pendulum;
 
 fn main() -> Result<(), Box<dyn Error>> {
-
     //Time step configuration
     let mut t: f64 = 0.0;
     const SLOOP_NUM: usize = 10000;
@@ -14,9 +13,9 @@ fn main() -> Result<(), Box<dyn Error>> {
     const TP: f64 = TS / PLOOP_NUM as f64;
 
     //Motor
-    let kt:f64 = 1.2;
+    let kt: f64 = 1.2;
     let mm: f64 = 0.5;
-    
+
     //Pendulum
     let lp: f64 = 2.0;
     let mp: f64 = 0.10;
@@ -31,12 +30,12 @@ fn main() -> Result<(), Box<dyn Error>> {
     let g: f64 = 500.0;
     let mut dob = dob::VelocityBased::<_, 0>::new(TS, kt, mm + mp, g);
 
-
     //Logging
     const ROW_SIZE: usize = 5;
     const DATAILE_SEPARATOR: &str = ",";
     let output_filename: String = format!("data/out.csv");
-    let mut data_storage = DataStorage::<f64, _, ROW_SIZE, SLOOP_NUM>::new(output_filename, DATAILE_SEPARATOR);
+    let mut data_storage =
+        DataStorage::<f64, _, ROW_SIZE, SLOOP_NUM>::new(output_filename, DATAILE_SEPARATOR);
 
     //Controller
     let kp: f64 = 1000.0;
@@ -59,17 +58,22 @@ fn main() -> Result<(), Box<dyn Error>> {
     let mut theta_cmd: f64;
 
     for _ in 0..SLOOP_NUM {
-
         /* disturbance observer */
         tau_dis = dob.update(iq_ref, plant.d1xm);
         i_cmp = tau_dis / kt;
 
         /* angle controller */
-        theta_cmd = if t < 1.0 { 0.2 } else if t < 4.0 { - 0.2 } else { 0.0 };
+        theta_cmd = if t < 1.0 {
+            0.2
+        } else if t < 4.0 {
+            -0.2
+        } else {
+            0.0
+        };
         err = theta_cmd - plant.d0theta;
         ierr += err * TS;
 
-        ddxm_ref = - kp * plant.d0theta - kd * plant.d1theta + ki * ierr;     
+        ddxm_ref = -kp * plant.d0theta - kd * plant.d1theta + ki * ierr;
 
         iq_ref = (k_acc * (mm + mp) / kt) * ddxm_ref + i_cmp;
 
@@ -84,5 +88,4 @@ fn main() -> Result<(), Box<dyn Error>> {
     data_storage.write_file()?;
 
     Ok(())
-
 }

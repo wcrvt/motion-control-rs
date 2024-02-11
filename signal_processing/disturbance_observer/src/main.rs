@@ -1,11 +1,10 @@
+use digitalservo::data_storage::DataStorage;
 use digitalservo::observer::disturbance_observer;
 use digitalservo::plant::motor;
-use digitalservo::data_storage::DataStorage;
 
 const TEST_NUM: usize = 4;
 
-fn main()-> Result<(), Box<dyn std::error::Error>> {
-
+fn main() -> Result<(), Box<dyn std::error::Error>> {
     //Time step configuration
     let mut t: f64 = 0.0;
     const SLOOP_NUM: usize = 2000;
@@ -17,7 +16,8 @@ fn main()-> Result<(), Box<dyn std::error::Error>> {
     const ROW_SIZE: usize = TEST_NUM + 2;
     const DATAFILE_SEPARATOR: &str = ",";
     const DATAFILE_PATH: &str = "data/estimated.csv";
-    let mut data_storage = DataStorage::<f64, _, ROW_SIZE, SLOOP_NUM>::new(DATAFILE_PATH, DATAFILE_SEPARATOR);
+    let mut data_storage =
+        DataStorage::<f64, _, ROW_SIZE, SLOOP_NUM>::new(DATAFILE_PATH, DATAFILE_SEPARATOR);
 
     //Plant
     let kt: f64 = 1.2;
@@ -38,7 +38,6 @@ fn main()-> Result<(), Box<dyn std::error::Error>> {
     let mut tau_dis_est: [f64; TEST_NUM] = [0.0; TEST_NUM];
 
     for _ in 0..SLOOP_NUM {
-
         /* disturbance observer */
         tau_dis_est[0] = dob0.update(iq_ref, plant.d1x);
         tau_dis_est[1] = dob1.update(iq_ref, plant.d1x);
@@ -46,7 +45,14 @@ fn main()-> Result<(), Box<dyn std::error::Error>> {
         tau_dis_est[3] = dob3.update(iq_ref, plant.d1x);
 
         //Logging
-        data_storage.add([t, tau_dis, tau_dis_est[0], tau_dis_est[1], tau_dis_est[2], tau_dis_est[3]]);
+        data_storage.add([
+            t,
+            tau_dis,
+            tau_dis_est[0],
+            tau_dis_est[1],
+            tau_dis_est[2],
+            tau_dis_est[3],
+        ]);
 
         //input
         iq_ref = -1.0 + 0.5 * (2.0 * std::f64::consts::PI * 3.0 * t);
@@ -65,5 +71,4 @@ fn main()-> Result<(), Box<dyn std::error::Error>> {
     data_storage.write_file()?;
 
     Ok(())
-
 }

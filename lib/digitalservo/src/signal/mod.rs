@@ -1,6 +1,6 @@
-pub mod integrator;
+pub mod delayer;
 pub mod differentiator;
 pub mod freefilter;
-pub mod lowpassfilter;
 pub mod highpassfilter;
-pub mod delayer;
+pub mod integrator;
+pub mod lowpassfilter;

@@ -1,7 +1,7 @@
 use num_traits;
 
 #[derive(Debug, Copy, Clone)]
-pub struct Statistics <T> {
+pub struct Statistics<T> {
     len: usize,
     offset: T,
     sum: T,
@@ -14,8 +14,9 @@ pub struct Statistics <T> {
     pub range: T,
 }
 
-impl <T> Statistics<T>
-    where T: num_traits::Float + std::ops::AddAssign
+impl<T> Statistics<T>
+where
+    T: num_traits::Float + std::ops::AddAssign,
 {
     pub fn new(offset: T) -> Self {
         let t_0: T = T::zero();
@@ -29,17 +30,17 @@ impl <T> Statistics<T>
             sigma: t_0,
             max: t_0,
             min: t_0,
-            range: t_0
+            range: t_0,
         }
     }
 
     pub fn add(&mut self, data: T) {
         self.len += 1;
 
-        let data_trim: T = data - self.offset; 
+        let data_trim: T = data - self.offset;
         self.sum += data_trim;
         self.sum_of_square += data_trim.powi(2);
-        
+
         let len_t: T = T::from(self.len).unwrap();
 
         let mu_trim: T = self.sum / len_t;
@@ -52,10 +53,13 @@ impl <T> Statistics<T>
         if self.len == 1 {
             self.max = data;
             self.min = data;
-        }
-        else {
-            if self.max < data {self.max = data};
-            if self.min > data {self.min = data};
+        } else {
+            if self.max < data {
+                self.max = data
+            };
+            if self.min > data {
+                self.min = data
+            };
         }
 
         self.range = self.max - self.min;
