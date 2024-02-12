@@ -1,7 +1,8 @@
 use num_traits::Float;
 use crate::algebra::*;
 
-use super::discrete;
+use super::{continuous, discrete};
+
 
 #[derive(Debug, Copy, Clone)]
 pub struct BlockedSSR<T, const N: usize> {
@@ -12,7 +13,8 @@ pub struct BlockedSSR<T, const N: usize> {
 }
 
 impl <T: Float + Default, const N: usize> BlockedSSR<T, N> {
-    pub fn from_discrete_ssr(m: &discrete::SSR<T, N>) -> BlockedSSR<T, N>{
+
+    pub fn from_discrete_ssr(m: &discrete::SSR<T, N>) -> BlockedSSR<T, N> {
         let mut a: Matrix<T, N, N> = Matrix::<T, N, N>::diag(T::one());
         let mut b: [[T; N]; N] = [[T::zero(); N]; N];
 
@@ -25,6 +27,11 @@ impl <T: Float + Default, const N: usize> BlockedSSR<T, N> {
         let c: Vector<T, N> = m.c;
 
         BlockedSSR { a, b, c, ts: m.ts }
+    }
+
+    pub fn from_continuous_ssr(m: &continuous::SSR<T, N>, ts: T) -> BlockedSSR<T, N> {
+        let discrete_ssr = discrete::SSR::<T, N>::from_continuous_ssr(m, ts);
+        Self::from_discrete_ssr(&discrete_ssr)
     }
 
     pub fn calculate_input(&mut self, current: &[T; N], next: &[T; N]) -> [T; N] {

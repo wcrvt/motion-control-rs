@@ -1,6 +1,6 @@
 use std::error::Error;
 
-use digitalservo::state_space::{continuous, discrete, blocked};
+use digitalservo::state_space::{continuous, blocked};
 use digitalservo::signal::stable_inversion::StableInverter;
 use digitalservo::data_storage::DataStorage;
 
@@ -27,8 +27,7 @@ fn main() -> Result<(), Box<dyn Error>>{
     let b_c: [f64; 2] = [0.0, 1.0];
     let c_c: [f64; 2] = [1.0, -1.0 / 50.0];
     let c_ssr = continuous::SSR::new(&a_c, &b_c, &c_c);
-    let d_ssr = discrete::SSR::from_continuous_ssr(&c_ssr, TS);
-    let mut b_ssr = blocked::BlockedSSR::from_discrete_ssr(&d_ssr);
+    let mut b_ssr = blocked::BlockedSSR::from_continuous_ssr(&c_ssr, TS);
 
     //Reference
     pub fn reference(t: f64) -> [f64; 2] {
@@ -38,17 +37,17 @@ fn main() -> Result<(), Box<dyn Error>>{
         let te: f64 = t0 + 1.0 / freq;
 
         let x: f64 = if t < t0 || t > te { 0.0 } else { 0.5 * (1.0 - (omega * (t - t0)).cos()) };
-        let v: f64 = if t < t0 || t >te { 0.0 } else { 0.5 * omega * (omega * (t - t0)).sin() };
+        let v: f64 = if t < t0 || t > te { 0.0 } else { 0.5 * omega * (omega * (t - t0)).sin() };
         [x, v]
     }
 
     const T_MAX: f64 = 0.4;
-    fn f_unstable(t: f64) -> f64 { 50.0 * (- 50.0 * t).exp()}
+    fn f_unstable(t: f64) -> f64 { 50.0 * (- 50.0 * t).exp() }
     let mut stable_inverter = StableInverter::new(reference, None, Some(f_unstable), T_MAX);
 
     //Calcularate feedforward signal
     let mut ref_z1: [f64; 2];
-    let mut ref_z0: [f64; 2] = [0.0; 2];
+    let mut ref_z0: [f64; 2] = stable_inverter.output(0.0);
     let mut u_ff: [f64; SLOOP_NUM] = [0.0; SLOOP_NUM];
     for i in 0..SAMPLES {
         ref_z1 = stable_inverter.output(t + TM);
