@@ -17,8 +17,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     let link: [f64; manipulator::JOINTSPACE_DIM] = [0.5, 0.4, 0.4];
 
     let plant_init_theta: [f64; manipulator::JOINTSPACE_DIM] = [-0.2, 1.2, 1.0];
-    let mut plant =
-        manipulator::SeriesLinkManipulator::new(kt, jm, link, TP).set_init_theta(plant_init_theta);
+    let mut plant = manipulator::SeriesLinkManipulator::new(kt, jm, link, TP).set_init_theta(plant_init_theta);
     let plant_init_x: [f64; manipulator::WORKSPACE_DIM] = plant.d0x.data;
 
     let g: f64 = 500.0;
@@ -32,8 +31,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     const ROW_SIZE: usize = 8;
     const DATAILE_SEPARATOR: &str = ",";
     let output_filename: String = format!("data/out.csv");
-    let mut data_storage =
-        DataStorage::<f64, _, ROW_SIZE, SLOOP_NUM>::new(output_filename, DATAILE_SEPARATOR);
+    let mut data_storage = DataStorage::<f64, _, ROW_SIZE, SLOOP_NUM>::new(output_filename, DATAILE_SEPARATOR);
 
     //Controller
     let kp: f64 = 1000.0;

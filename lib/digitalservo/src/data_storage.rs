@@ -13,15 +13,15 @@ pub struct DataStorage<T, P, const ROWSIZE: usize, const DATALEN: usize> {
 impl<T, P, const ROWSIZE: usize, const DATALEN: usize> DataStorage<T, P, ROWSIZE, DATALEN>
 where
     T: std::fmt::Display
+        + Default
         + std::fmt::Debug
-        + num_traits::Num
         + std::clone::Clone
         + std::marker::Copy,
     P: AsRef<Path>,
 {
     pub fn new(path: P, separator: &str) -> Self {
         Self {
-            data: [[T::zero(); ROWSIZE]; DATALEN],
+            data: [[T::default(); ROWSIZE]; DATALEN],
             path,
             separator: separator.into(),
             cnt: 0,

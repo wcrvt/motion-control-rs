@@ -1,4 +1,4 @@
-use crate::algebra::{matrix::Matrix, vector::Vector};
+use crate::algebra::*;
 use num_traits::Float;
 
 pub struct KalmanFilter<T, const N: usize>

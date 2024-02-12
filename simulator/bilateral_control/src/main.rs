@@ -48,8 +48,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     const ROW_SIZE: usize = 5;
     const DATAILE_SEPARATOR: &str = ",";
     let output_filename: String = format!("data/out_mode_{}.csv", mode);
-    let mut data_storage =
-        DataStorage::<f64, _, ROW_SIZE, SLOOP_NUM>::new(output_filename, DATAILE_SEPARATOR);
+    let mut data_storage = DataStorage::<f64, _, ROW_SIZE, SLOOP_NUM>::new(output_filename, DATAILE_SEPARATOR);
 
     let env_k: f64 = 1000.0;
     let env_d: f64 = 20.0;

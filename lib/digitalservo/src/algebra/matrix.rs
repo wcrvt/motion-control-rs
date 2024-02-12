@@ -1,12 +1,8 @@
-use super::vector::*;
 use num_traits::Float;
 use std::borrow::Borrow;
 use std::ops::{Add, AddAssign, Div, DivAssign, Index, IndexMut, Mul, MulAssign, Sub, SubAssign};
 
-#[derive(Debug, Clone, Copy)]
-pub struct Matrix<T, const ROWS: usize, const COLS: usize> {
-    pub data: [[T; COLS]; ROWS],
-}
+use super::{Matrix, Vector};
 
 impl<T, const ROWS: usize, const COLS: usize> Default for Matrix<T, ROWS, COLS>
 where
@@ -27,7 +23,6 @@ where
             data: [[T::default(); COLS]; ROWS],
         }
     }
-    //pub fn from(data: [[T; COLS]; ROWS]) -> Self { Self { data } }
     pub fn nrow(&self) -> usize {
         ROWS
     }

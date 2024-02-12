@@ -1,11 +1,7 @@
-use super::matrix::*;
+use super::{Matrix, Vector};
 use std::borrow::Borrow;
 use std::ops::{Add, AddAssign, Div, DivAssign, Index, IndexMut, Mul, MulAssign, Sub, SubAssign};
 
-#[derive(Debug, Clone, Copy)]
-pub struct Vector<T, const ROWS: usize> {
-    pub data: [T; ROWS],
-}
 
 impl<T: Default + Copy, const ROWS: usize> Vector<T, ROWS> {
     pub fn new() -> Self {

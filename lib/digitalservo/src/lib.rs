@@ -3,6 +3,7 @@
 
 pub mod algebra;
 pub mod data_storage;
+pub mod state_space;
 pub mod mclib;
 pub mod observer;
 pub mod plant;
