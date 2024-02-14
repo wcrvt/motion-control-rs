@@ -524,11 +524,7 @@ impl<T: Float + Default, const ROWS: usize, const COLS: usize> Matrix<T, ROWS, C
         }
 
         let mut m1: Matrix<T, ROWS, COLS> = self.clone();
-        let mut m2: Matrix<T, ROWS, COLS> = Matrix::new();
-
-        for i in 0..COLS {
-            m2[i][i] = T::one();
-        }
+        let mut m2: Matrix<T, ROWS, COLS> = Matrix::diag(T::one());
 
         for i in 0..COLS {
             let mut max_row_option: usize = 0;
@@ -606,5 +602,17 @@ impl<T: Float + Default, const ROWS: usize, const COLS: usize> Matrix<T, ROWS, C
         } else {
             self.inverse_overdetermined()
         }
+    }
+}
+
+impl<T: Float + Default, const N: usize> Matrix<T, N, N> {
+    pub fn exp(self) -> Self {
+        pub const P: usize = 1000;
+        let identity: Matrix<T, N, N> = Matrix::<T, N, N>::diag(T::one());
+        let mut ret: Matrix<T, N, N>  = identity + self / T::from(P).unwrap();
+        for i in (1..P).rev() {
+            ret = identity + self / T::from(i).unwrap() * ret;
+        }
+        ret
     }
 }

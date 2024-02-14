@@ -36,12 +36,12 @@ impl <T: Float + Default, const N: usize> SSR<T, N> {
         let mut t: T = T::zero();
         let tp: T = ts / T::from(INT_DIV).unwrap();
         for _ in 0..INT_DIV {
-            let integrand: Matrix<T, N, N> = get_matrix_exponential(&(c_ssr.a * t));
+            let integrand: Matrix<T, N, N> = (c_ssr.a * t).exp();
             a_int += integrand * tp;
             t = t + tp;
         }
 
-        let a: Matrix<T, N, N> = get_matrix_exponential(&(c_ssr.a * ts));
+        let a: Matrix<T, N, N> = (c_ssr.a * ts).exp();
         let b: Vector<T, N> = a_int * c_ssr.b;
         let c: Vector<T, N> = c_ssr.c;
         Self { a, b, c, ts }
@@ -69,14 +69,4 @@ impl <T: Float + Default, const N: usize> Plant<T, N> {
         self.x =  &self.ssr.a * &self.x + &self.ssr.b * u; 
         self.y = self.ssr.c.dot(&self.x);
     }
-}
-
-pub fn get_matrix_exponential<T: Float + Default, const N: usize>(m: &Matrix<T, N, N>) -> Matrix<T, N, N> {
-    const P: usize = 500;
-    let identity: Matrix<T, N, N> = Matrix::<T, N, N>::diag(T::one());
-    let mut ret: Matrix<T, N, N>  = identity + m / T::from(P).unwrap();
-    for i in (1..P).rev() {
-        ret = identity + m / T::from(i).unwrap() * ret;
-    }
-    ret
 }

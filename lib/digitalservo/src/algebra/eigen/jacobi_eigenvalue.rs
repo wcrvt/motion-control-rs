@@ -1,12 +1,10 @@
-pub struct Eigen<T, const N: usize> {
-    pub eigen_value: [T; N],
-    pub eigen_vector: [Vector<T, N>; N],
-    pub p_matrix: Matrix<T, N, N>
-}
+use num_traits::Float;
+use super::*;
 
-impl <T: Float + Default + std::ops::AddAssign + std::fmt::Debug, const N: usize> Eigen<T, N> {
 
-    pub fn givens_rotation(i: usize, j: usize, theta: T) -> Matrix<T, N, N> {
+impl <T: Float + Default, const N: usize> Eigen<T, N> {
+    
+    fn givens_rotation(i: usize, j: usize, theta: T) -> Matrix<T, N, N> {
         let mut ret: Matrix<T, N, N> = Matrix::<T, N, N>::diag(T::one());
         let c: T = theta.cos();
         let s: T = theta.sin();
@@ -14,11 +12,11 @@ impl <T: Float + Default + std::ops::AddAssign + std::fmt::Debug, const N: usize
         ret[j][j] = c;
         ret[i][j] = -s;
         ret[j][i] = s;
-    
+
         ret
     }
-    
-    pub fn search_absolute_maximum(m: &Matrix<T, N, N>) -> [usize; 2]{
+
+    fn search_absolute_maximum(m: &Matrix<T, N, N>) -> [usize; 2]{
         let mut id: [usize; 2] = [0, 1];
         let mut max: T = m[id[0]][id[1]];
         for i in 0..N {
@@ -29,11 +27,10 @@ impl <T: Float + Default + std::ops::AddAssign + std::fmt::Debug, const N: usize
                 }
             }
         }
-        println!("{:?}", max);
         id
     }
-    
-    pub fn jacobi_eigenvalue_for_symmetric(m: &Matrix<T, N, N>) -> Self {
+
+    pub fn jacobi_eigenvalue(m: &Matrix<T, N, N>) -> Eigen<T, N> {
 
         let mut diag: Matrix<T, N, N> = m.clone();
         let mut p_matrix: Matrix<T, N, N> = Matrix::<T, N, N>::diag(T::one());
@@ -51,12 +48,12 @@ impl <T: Float + Default + std::ops::AddAssign + std::fmt::Debug, const N: usize
             let g: Matrix<T, N, N> = Self::givens_rotation(id[0], id[1], theta);
             diag = g.transpose() * diag * g;
             p_matrix *= g;
-    
+
             let mut nondiag_norm: T = T::zero();
             for i in 0..N {
                 for j in 0..N {
                     if i != j {
-                        nondiag_norm += diag[i][j].powi(2);
+                        nondiag_norm = nondiag_norm + diag[i][j].powi(2);
                     }
                 }
             }
@@ -66,19 +63,13 @@ impl <T: Float + Default + std::ops::AddAssign + std::fmt::Debug, const N: usize
         }
 
         let p_transpose = p_matrix.transpose();
-        let mut eigen_value: [T; N] = [T::zero(); N];
-        let mut eigen_vector: [Vector<T, N>; N] = [Vector::new(); N];
+        let mut value: [T; N] = [T::zero(); N];
+        let mut vector: [[T; N]; N] = [[T::zero(); N]; N];
         for i in 0..N {
-            eigen_value[i] = diag[i][i];
-            eigen_vector[i] = Vector::from(p_transpose.data[i]);
+            value[i] = diag[i][i];
+            vector[i] = Vector::from(p_transpose.data[i]).data;
         }
 
-        Self {
-            eigen_value,
-            eigen_vector,
-            p_matrix,
-        }
-
+        Eigen { value, vector }
     }
-    
 }
