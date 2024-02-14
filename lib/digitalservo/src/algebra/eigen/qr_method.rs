@@ -1,14 +1,16 @@
 use num_traits::Float;
+use std::borrow::Borrow;
 use super::*;
 
-struct QRAlgorithm<T, const N: usize> {
+struct QRMatrix<T, const N: usize> {
     q: Matrix<T, N, N>,
     r: Matrix<T, N, N>
 }
 
 impl <T: Float + Default, const N: usize> Eigen<T, N> {
     
-    fn gram_schmidt_process(m: &Matrix<T, N, N>) -> QRAlgorithm<T, N> {
+    fn gram_schmidt_process<S: Borrow<Matrix<T, N, N>>>(m: S) -> QRMatrix<T, N> {
+        let m: &Matrix<T, N, N> = m.borrow();
         let mt: Matrix<T, N, N> = m.transpose();
     
         let mut a: [Vector<T, N>; N] = [Vector::new(); N];
@@ -31,20 +33,21 @@ impl <T: Float + Default, const N: usize> Eigen<T, N> {
         let q: Matrix<T, N, N> = Matrix::from(un).transpose();
         let r: Matrix<T, N, N> = q.transpose() * m;
 
-        QRAlgorithm {q, r}
+        QRMatrix {q, r}
     }
 
-    pub fn qr_method(m: &Matrix<T, N, N>) -> Self {
+    pub fn qr_method<S: Borrow<Matrix<T, N, N>>>(m: S) -> Self {
+        let m: &Matrix<T, N, N> = m.borrow();
+        const ITER_EIGEN_VAL: usize = 100;
+        const ITER_EIGEN_VEC: usize = 100;
+
         let mut a: Matrix<T, N, N> = m.clone();
-        for _ in 0..100 {
-            let qr: QRAlgorithm<T, N> = Self::gram_schmidt_process(&a);
-            a = qr.r * qr.q;
+        for _ in 0..ITER_EIGEN_VAL {
+            let mu: Matrix<T, N, N> = Matrix::<T, N, N>::diag(a[N-1][N-1]);
+            let qr: QRMatrix<T, N> = Self::gram_schmidt_process(a - mu);
+            a = qr.r * qr.q + mu;
         }
-        
-        let mut value: [T; N] = [T::zero(); N];
-        for i in 0..N {
-            value[i] = a[i][i];
-        }
+        let value: [T; N] = a.diag_elements();
 
         let mut vector: [[T; N]; N] = [[T::zero(); N]; N];
         let mu: T = T::from(1e-10).unwrap();
@@ -54,7 +57,7 @@ impl <T: Float + Default, const N: usize> Eigen<T, N> {
             for i in 0..N{
                 y[i] = T::one() / T::from(N).unwrap().sqrt();
             }
-            for _ in 0..100 {
+            for _ in 0..ITER_EIGEN_VEC {
                 let k: Vector<T, N> = p * y;
                 y = k / (k.dot(k)).sqrt();
             }

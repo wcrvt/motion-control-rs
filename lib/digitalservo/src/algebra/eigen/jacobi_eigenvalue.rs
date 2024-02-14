@@ -1,4 +1,5 @@
 use num_traits::Float;
+use std::borrow::Borrow;
 use super::*;
 
 
@@ -30,8 +31,8 @@ impl <T: Float + Default, const N: usize> Eigen<T, N> {
         id
     }
 
-    pub fn jacobi_eigenvalue(m: &Matrix<T, N, N>) -> Eigen<T, N> {
-
+    pub fn jacobi_eigenvalue<S: Borrow<Matrix<T, N, N>>>(m: S) -> Eigen<T, N> {
+        let m = m.borrow();
         let mut diag: Matrix<T, N, N> = m.clone();
         let mut p_matrix: Matrix<T, N, N> = Matrix::<T, N, N>::diag(T::one());
         
