@@ -102,7 +102,7 @@ impl<T: Float + Default> QuaternionObserver<T> {
     }
 
     fn get_prediction_jacobian(&mut self) -> Matrix<T, 4, 3> {
-        let q_h: Vector<T, 4> = &self.q_hat * T::from(0.5).unwrap();
+        let q_h: Vector<T, 4> = self.q_hat * T::from(0.5).unwrap();
         Matrix::from([
             [-q_h[1], -q_h[2], -q_h[3]],
             [q_h[0], -q_h[3], q_h[2]],
@@ -164,21 +164,21 @@ impl<T: Float + Default> QuaternionObserver<T> {
 
         //Preparation
         let jacobian_f: Matrix<T, 4, 3> = self.get_prediction_jacobian();
-        let jacobian_fdt: Matrix<T, 4, 3> = &jacobian_f * self.ts;
+        let jacobian_fdt: Matrix<T, 4, 3> = jacobian_f * self.ts;
         let inv_jacobian_fdt: Matrix<T, 3, 4> = jacobian_fdt.inverse_overdetermined().unwrap();
 
         //Observer: prediction (quaternion)
-        self.omega_hat = &omega_sense + &self.omega_bias_hat;
-        self.dq_hat = &jacobian_f * &self.omega_hat;
-        let q_predict: Vector<T, 4> = &self.q_hat + &self.dq_hat * self.ts;
+        self.omega_hat = omega_sense + self.omega_bias_hat;
+        self.dq_hat = jacobian_f * self.omega_hat;
+        let q_predict: Vector<T, 4> = self.q_hat + self.dq_hat * self.ts;
 
         //Observer: prediction (acceleration_b)
-        let dcm: DirectionCosineMatrix<T> = DirectionCosineMatrix::from(&q_predict);
+        let dcm: DirectionCosineMatrix<T> = DirectionCosineMatrix::from(q_predict);
         let hx: Matrix<T, 3, 3> = dcm.backward;
         let jacobian_hx: Matrix<T, 6, 4> = self.get_observation_jacobian(&q_predict);
         let inv_jacobian_hx: Matrix<T, 4, 6> = jacobian_hx.inverse_overdetermined().unwrap();
-        let acc_b_est: Vector<T, 3> = &hx * &gravity_r + &dyn_acc_b_predict;
-        let geomag_b_est: Vector<T, 3> = &hx * &geomag_r;
+        let acc_b_est: Vector<T, 3> = hx * gravity_r + dyn_acc_b_predict;
+        let geomag_b_est: Vector<T, 3> = hx * geomag_r;
         let y_est: Vector<T, 6> = Vector::from([
             acc_b_est[0],
             acc_b_est[1],
@@ -189,13 +189,13 @@ impl<T: Float + Default> QuaternionObserver<T> {
         ]);
 
         //Observer: feedback
-        let y_err: Vector<T, 6> = &y_sense - &y_est;
-        let delta_q_est: Vector<T, 4> = &inv_jacobian_hx * &y_err;
-        let omega_bias_est: Vector<T, 3> = &inv_jacobian_fdt * &delta_q_est;
+        let y_err: Vector<T, 6> = y_sense - y_est;
+        let delta_q_est: Vector<T, 4> = inv_jacobian_hx * y_err;
+        let omega_bias_est: Vector<T, 3> = inv_jacobian_fdt * delta_q_est;
 
         //Update
-        self.q_hat = &q_predict + &delta_q_est * self.gain_q;
-        self.omega_bias_hat += &omega_bias_est * self.gain_b;
+        self.q_hat = q_predict + delta_q_est * self.gain_q;
+        self.omega_bias_hat += omega_bias_est * self.gain_b;
 
         let q_hat_norm: T = (self.q_hat[0].powi(2)
             + self.q_hat[1].powi(2)

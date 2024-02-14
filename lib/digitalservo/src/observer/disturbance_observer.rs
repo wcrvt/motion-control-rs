@@ -47,9 +47,9 @@ where
         let b2: T = kt / jm;
 
         //matrices for state observer
-        let tu: Vector<T, { ORDER + 1 }> = &b1 - &g * b2;
-        let ty: Vector<T, { ORDER + 1 }> = &a_12 - &g * a_22;
-        let tz: Matrix<T, { ORDER + 1 }, { ORDER + 1 }> = &a_11 - &g.outer(&a_21);
+        let tu: Vector<T, { ORDER + 1 }> = b1 - g * b2;
+        let ty: Vector<T, { ORDER + 1 }> = a_12 - g * a_22;
+        let tz: Matrix<T, { ORDER + 1 }, { ORDER + 1 }> = a_11 - g.outer(a_21);
 
         //initialize
         let py: Vector<T, { ORDER + 1 }> = Vector::new();
@@ -70,7 +70,7 @@ where
 
     pub fn set_kt(mut self, kt: T) -> Self {
         self.kt = kt;
-        self.tu = &self.g * (-kt / self.jm);
+        self.tu = self.g * (-kt / self.jm);
         self
     }
 
@@ -81,16 +81,16 @@ where
         a_21[0] = -T::one() / jm;
 
         self.jm = jm;
-        self.tu = &self.g * (-self.kt / jm);
-        self.tz = &a_11 + &self.g.outer(&a_21);
+        self.tu = self.g * (-self.kt / jm);
+        self.tz = a_11 + self.g.outer(a_21);
 
         self
     }
 
     pub fn update(&mut self, i: T, v: T) -> T {
-        let u: Vector<T, { ORDER + 1 }> = &self.tu * i + (&self.tz * &self.g + &self.ty) * v;
-        self.py += (&u + &self.tz * &self.py) * self.ts;
-        let out: T = self.py0_z1 + (&self.g * v)[0];
+        let u: Vector<T, { ORDER + 1 }> = self.tu * i + (self.tz * self.g + self.ty) * v;
+        self.py += (u + self.tz * self.py) * self.ts;
+        let out: T = self.py0_z1 + (self.g * v)[0];
         self.py0_z1 = self.py[0];
         -out
     }
