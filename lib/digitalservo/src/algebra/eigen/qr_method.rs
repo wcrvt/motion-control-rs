@@ -2,14 +2,14 @@ use num_traits::Float;
 use std::borrow::Borrow;
 use super::*;
 
-struct QRMatrix<T, const N: usize> {
-    q: Matrix<T, N, N>,
-    r: Matrix<T, N, N>
+pub struct QRMatrix<T, const N: usize> {
+    pub q: Matrix<T, N, N>,
+    pub r: Matrix<T, N, N>
 }
 
 impl <T: Float + Default, const N: usize> Eigen<T, N> {
     
-    fn gram_schmidt_process<S: Borrow<Matrix<T, N, N>>>(m: S) -> QRMatrix<T, N> {
+    pub fn gram_schmidt_process<S: Borrow<Matrix<T, N, N>>>(m: S) -> QRMatrix<T, N> {
         let m: &Matrix<T, N, N> = m.borrow();
         let mt: Matrix<T, N, N> = m.transpose();
     

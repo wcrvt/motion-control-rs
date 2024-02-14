@@ -10,7 +10,12 @@ where
     }
 
     pub fn normalize(self) -> Self {
-        self / (self * self).sqrt()
+        let zero_vec: Vector<T, ROWS> = Vector::<T, ROWS>::new();
+        if self == zero_vec {
+            zero_vec
+        } else {
+            self / (self * self).sqrt()
+        }
     }
 
     pub fn projection<S: Borrow<Self>>(self, u: S) -> Vector<T, ROWS> {

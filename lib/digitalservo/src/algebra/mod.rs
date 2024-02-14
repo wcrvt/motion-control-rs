@@ -3,12 +3,12 @@ pub mod vector;
 pub mod eigen;
 
 
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, Clone, Copy, PartialEq)]
 pub struct Matrix<T, const ROWS: usize, const COLS: usize> {
     pub data: [[T; COLS]; ROWS],
 }
 
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, Clone, Copy, PartialEq)]
 pub struct Vector<T, const ROWS: usize> {
     pub data: [T; ROWS],
 }
