@@ -16,7 +16,7 @@ fn main() {
     let mut data_storage = DataStorage::<f64, _, ROW_SIZE, SLOOP_NUM>::new(output_filename, DATAILE_SEPARATOR);
 
     //reference
-    pub fn reference(t: f64) -> [f64; N] {
+    fn reference(t: f64) -> [f64; N] {
         let t0: f64 = 0.05;
         let freq: f64 = 20.0;
         let omega: f64 = 2.0 * std::f64::consts::PI * freq;
@@ -25,7 +25,6 @@ fn main() {
         let x: f64 = if t < t0 || t > te { 0.0 } else { 0.5 * (1.0 - (omega * (t - t0)).cos()) };
         let v: f64 = if t < t0 || t > te { 0.0 } else { 0.5 * omega * (omega * (t - t0)).sin() };
         let a: f64 = if t < t0 || t > te { 0.0 } else { 0.5 * omega * omega * (omega * (t - t0)).cos() };
-
         [x, v, a]
     }
     

@@ -30,9 +30,9 @@ fn main() -> Result<(), Box<dyn Error>>{
     let mut b_ssr = blocked::BlockedSSR::from_continuous_ssr(&c_ssr, TS);
 
     //Reference
-    pub fn reference(t: f64) -> [f64; 2] {
-        let t0: f64 = 0.3;
-        let freq: f64 = 20.0;
+    fn reference(t: f64) -> [f64; 2] {
+        let t0: f64 = 0.2;
+        let freq: f64 = 50.0;
         let omega: f64 = 2.0 * std::f64::consts::PI * freq;
         let te: f64 = t0 + 1.0 / freq;
 

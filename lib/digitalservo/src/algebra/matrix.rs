@@ -535,7 +535,7 @@ impl<T: Float + Default, const ROWS: usize, const COLS: usize> Matrix<T, ROWS, C
             let mut max_value_option: T = T::zero();
             for j in i..COLS {
                 if m1[j][i].abs() > max_value_option {
-                    max_value_option = m1[j][i];
+                    max_value_option = m1[j][i].abs();
                     max_row_option = j;
                 }
             }

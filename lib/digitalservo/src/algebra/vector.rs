@@ -1,4 +1,5 @@
 use super::{Matrix, Vector};
+use num_traits::Float;
 use std::borrow::Borrow;
 use std::ops::{Add, AddAssign, Div, DivAssign, Index, IndexMut, Mul, MulAssign, Sub, SubAssign};
 
@@ -247,7 +248,8 @@ impl<T, const ROWS: usize> Vector<T, ROWS>
 where
     T: Add<Output = T> + Mul<Output = T> + Default + Copy,
 {
-    pub fn dot(self, other: &Self) -> T {
+    pub fn dot<S: Borrow<Self>>(self, other: S) -> T {
+        let other = other.borrow();
         let mut ret: T = T::default();
         for i in 0..ROWS {
             ret = ret + self[i] * other[i];
@@ -255,7 +257,8 @@ where
         ret
     }
 
-    pub fn outer(self, other: &Self) -> Matrix<T, ROWS, ROWS> {
+    pub fn outer<S: Borrow<Self>>(self, other: S) -> Matrix<T, ROWS, ROWS> {
+        let other = other.borrow();
         let mut ret: Matrix<T, ROWS, ROWS> = Matrix::<T, ROWS, ROWS>::new();
         for i in 0..ROWS {
             for j in 0..ROWS {
@@ -263,5 +266,24 @@ where
             }
         }
         ret
+    }
+}
+
+
+impl<T, const ROWS: usize> Vector<T, ROWS>
+where
+    T: Float + Add<Output = T> + Mul<Output = T> + Default + Copy,
+{
+    pub fn norm(&self) -> T {
+        (self.dot(self)).sqrt()
+    }
+
+    pub fn normalize(self) -> Self {
+        self / (self.dot(&self)).sqrt()
+    }
+
+    pub fn projection<S: Borrow<Self>>(self, u: S) -> Vector<T, ROWS> {
+        let u = u.borrow();
+        u * self.dot(u) / u.dot(u)
     }
 }

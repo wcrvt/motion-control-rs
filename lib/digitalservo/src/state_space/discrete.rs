@@ -71,17 +71,12 @@ impl <T: Float + Default, const N: usize> Plant<T, N> {
     }
 }
 
-fn get_matrix_exponential<T: Float + Default, const N: usize>(m: &Matrix<T, N, N>) -> Matrix<T, N, N> {
+pub fn get_matrix_exponential<T: Float + Default, const N: usize>(m: &Matrix<T, N, N>) -> Matrix<T, N, N> {
+    const P: usize = 500;
     let identity: Matrix<T, N, N> = Matrix::<T, N, N>::diag(T::one());
-    let mut a_operand: Matrix<T, N, N> = identity;
-    let mut divider: T = T::one();
-    let mut ret: Matrix<T, N, N>  = identity;
-
-    for i in 0..1000 {
-        a_operand = a_operand * m;
-        ret += a_operand / divider;
-        divider = divider * T::from(i + 2).unwrap();
+    let mut ret: Matrix<T, N, N>  = identity + m / T::from(P).unwrap();
+    for i in (1..P).rev() {
+        ret = identity + m / T::from(i).unwrap() * ret;
     }
-
     ret
 }
