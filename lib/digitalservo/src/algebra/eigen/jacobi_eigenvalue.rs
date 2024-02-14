@@ -62,7 +62,7 @@ impl <T: Float + Default, const N: usize> Eigen<T, N> {
             i += 1;
         }
 
-        let p_transpose = p_matrix.transpose();
+        let p_transpose: Matrix<T, N, N> = p_matrix.transpose();
         let mut value: [T; N] = [T::zero(); N];
         let mut vector: [[T; N]; N] = [[T::zero(); N]; N];
         for i in 0..N {

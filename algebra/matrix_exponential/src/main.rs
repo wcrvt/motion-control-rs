@@ -14,4 +14,9 @@ fn main() {
 
     let q = m.exp();
     println!("{:.04?}", q.data);
+
+    let v = Vector::from([1,2,3]);
+    let mut w = Vector::from([1,2,3]);
+    w += v;
+    println!("{:?}", w);
 }

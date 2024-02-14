@@ -66,7 +66,7 @@ impl <T: Float + Default, const N: usize> Plant<T, N> {
     }
 
     pub fn update(&mut self, u: T) {
-        self.x =  &self.ssr.a * &self.x + &self.ssr.b * u; 
-        self.y = self.ssr.c.dot(&self.x);
+        self.x =  self.ssr.a * self.x + self.ssr.b * u; 
+        self.y = self.ssr.c.dot(self.x);
     }
 }

@@ -48,14 +48,14 @@ where
             phi[i + P] = self.u[i]
         }
 
-        self.psi_sum += &phi * y;
-        self.phi_sum += phi.outer(&phi);
+        self.psi_sum += phi * y;
+        self.phi_sum += phi.outer(phi);
     }
 
     pub fn identify(&mut self) -> Option<[T; P + Z + 1]> {
         match self.phi_sum.inverse() {
             Some(res) => {
-                let theta = &res * &self.psi_sum;
+                let theta = res * self.psi_sum;
                 Some(theta.data)
             }
             None => None,

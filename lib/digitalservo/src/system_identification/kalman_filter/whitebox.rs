@@ -21,7 +21,7 @@ impl<T: Float + Default, const P: usize> KalmanFilter<T, P> {
     pub fn update(&mut self, phi: &[T; P], y: T) {
         let phi = Vector::from(phi);
 
-        let y_est: T = phi.dot(&self.parameter);
+        let y_est: T = phi.dot(self.parameter);
         let y_err: T = y - y_est;
 
         //Predict step
@@ -29,11 +29,11 @@ impl<T: Float + Default, const P: usize> KalmanFilter<T, P> {
 
         //Update step
         let uncertainty_sense: T = self.sigma_w;
-        let uncertainty_predict: T = phi.dot(&(&self.covariance * &phi));
+        let uncertainty_predict: T = phi.dot(self.covariance * phi);
         let uncertainty_observe: T = uncertainty_sense + uncertainty_predict;
 
-        let x = &self.covariance * &phi;
-        self.parameter += (&x * y_err) / uncertainty_observe;
-        self.covariance -= x.outer(&x) / uncertainty_observe;
+        let x = self.covariance * phi;
+        self.parameter += (x * y_err) / uncertainty_observe;
+        self.covariance -= x.outer(x) / uncertainty_observe;
     }
 }

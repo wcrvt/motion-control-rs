@@ -38,8 +38,8 @@ impl <T: Float + Default, const N: usize> Plant<T, N> {
     }
 
     pub fn update(&mut self, u: T) {
-        let dx: Vector<T, N> = &self.ssr.a * &self.x + self.ssr.b * u;
+        let dx: Vector<T, N> = self.ssr.a * self.x + self.ssr.b * u;
         self.x +=  dx * self.ts; 
-        self.y = self.ssr.c.dot(&self.x);
+        self.y = self.ssr.c.dot(self.x);
     }
 }

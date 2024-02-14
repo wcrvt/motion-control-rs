@@ -30,22 +30,19 @@ where
             phi[i] = x.powi((N - i) as i32);
         }
 
-        let y_est: T = phi.dot(&self.parameter);
+        let y_est: T = phi.dot(self.parameter);
         let y_err: T = y - y_est;
 
         //Predict step
-        self.covariance += &self.sigma_v;
+        self.covariance += self.sigma_v;
 
         //Update step
         let uncertainty_sense: T = self.sigma_w;
-        let uncertainty_predict: T = phi.dot(&(&self.covariance * &phi));
+        let uncertainty_predict: T = phi.dot(self.covariance * phi);
         let uncertainty_observe: T = uncertainty_sense + uncertainty_predict;
 
-        let x = &self.covariance * phi;
-        self.parameter += (&x * y_err) / uncertainty_observe;
-        self.covariance -= x.outer(&x) / uncertainty_observe;
-
-        //use forgetting factor
-        //self.covariance = (&self.covariance - (&x * &x.transpose()) / uncertainty_observe) / self.sigma_w;
+        let x = self.covariance * phi;
+        self.parameter += (x * y_err) / uncertainty_observe;
+        self.covariance -= x.outer(x) / uncertainty_observe;
     }
 }
