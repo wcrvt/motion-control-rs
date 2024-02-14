@@ -74,15 +74,12 @@ fn main() {
         t += TS;
     }
 
-    println!("\nSampling time: {TS:?}\n");
-    println!("Estimated value...");
-    println!("Set Parameter:\t[jm, dm]={:?}", [jm, dm]);
-    println!("ARX (BP):\t[jm, dm]={:?}", sx_arx_lsm.identify().unwrap());
-    println!("ARX (KF):\t[jm, dm]={:?}", sx_arx_kf.parameter.data);
-    println!(
-        "White box (BP):\t[jm, dm]={:?}",
-        sx_wb_lsm.identify().unwrap()
-    );
+    println!("\nSampling time: {TS:?}");
+    println!("Set Parameter:\t[jm, dm]={:?}\n", [jm, dm]);
+    println!("ARX (BP):\t{:?}", sx_arx_lsm.identify().unwrap());
+    println!("ARX (KF):\t{:?}", sx_arx_kf.parameter.data);
+    println!("\nEstimated value...");
+    println!("White box (BP):\t[jm, dm]={:?}", sx_wb_lsm.identify().unwrap());
     println!("White box (KF):\t[jm, dm]={:?}", sx_wb_kf.parameter.data);
 
     data_storage.write_file().unwrap();
