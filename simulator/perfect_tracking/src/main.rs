@@ -18,10 +18,9 @@ fn main() -> Result<(), Box<dyn Error>>{
     let mut t: f64 = 0.0;
 
     //Logging
-    const ROW_SIZE: usize = 3;
     const DATAILE_SEPARATOR: &str = ",";
     let output_filename: String = format!("data/out.csv");
-    let mut data_storage = DataStorage::<f64, _, ROW_SIZE, SLOOP_NUM>::new(output_filename, DATAILE_SEPARATOR);
+    let mut data_storage = DataStorage::new(output_filename, DATAILE_SEPARATOR, SLOOP_NUM);
 
     let a_c: [[f64; 2]; 2] = [[0.0, 1.0], [-1000.0, -20.0]];
     let b_c: [f64; 2] = [0.0, 1.0];

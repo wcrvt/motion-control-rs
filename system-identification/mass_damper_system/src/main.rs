@@ -33,12 +33,9 @@ fn main() {
     let mut sx_wb_lsm = lsm::whitebox::DataBuffer::<f64, 2>::new();
 
     //Data storage
-    const ROW_SIZE: usize = 2;
-    const DATA_SIZE: usize = DATALEN;
     const DATAILE_SEPARATOR: &str = ",";
     let output_filename: String = format!("data/out.csv");
-    let mut data_storage =
-        DataStorage::<f64, _, ROW_SIZE, DATA_SIZE>::new(output_filename, DATAILE_SEPARATOR);
+    let mut data_storage = DataStorage::new(output_filename, DATAILE_SEPARATOR, DATALEN);
 
     for _ in 0..DATALEN {
         data_storage.add(sx_wb_kf.parameter.data);

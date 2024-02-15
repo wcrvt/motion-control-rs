@@ -25,14 +25,10 @@ fn main() {
 
     //Logging
     const DATAFILE_SEPARATOR: &str = ",";
-
-    const ROW_SIZE_SAMPLE: usize = 2;
     const DATAFILE_PATH_SAMPLE: &str = "data/sample.csv";
-    let mut data_storage_sample = DataStorage::<f64, _, ROW_SIZE_SAMPLE, SAMPLES>::new(DATAFILE_PATH_SAMPLE, DATAFILE_SEPARATOR);
-    
-    const ROW_SIZE_MAP: usize = 4;
     const DATAFILE_PATH_MAP: &str = "data/map.csv";
-    let mut data_storage_map = DataStorage::<f64, _, ROW_SIZE_MAP, DATA_MAPPING>::new(DATAFILE_PATH_MAP, DATAFILE_SEPARATOR);
+    let mut data_storage_sample = DataStorage::new(DATAFILE_PATH_SAMPLE, DATAFILE_SEPARATOR, SAMPLES);
+    let mut data_storage_map = DataStorage::new(DATAFILE_PATH_MAP, DATAFILE_SEPARATOR, DATA_MAPPING);
 
     let mut gpr = gpr::GaussianProcessRegression::new(kernel, 0.5);
 

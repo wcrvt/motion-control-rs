@@ -24,17 +24,14 @@ fn main() {
     let mut theta: Vec<f64> = vec![0.2, 0.5];
     const DEGREE: usize = 1;
 
-    let mut sx_kalman =
-        kalman_filter::polynomial::KalmanFilter::<_, DEGREE>::new(0.00001, 1.0, 10000.0);
+    let mut sx_kalman = kalman_filter::polynomial::KalmanFilter::<_, DEGREE>::new(0.00001, 1.0, 10000.0);
     let mut sx_lsm = lsm::polynomial::DataBuffer::<f64, DEGREE>::new();
 
-    const ROW_SIZE: usize = 4;
+    //Logging
     const DATA_SIZE: usize = 3 * DATALEN;
     const DATAILE_SEPARATOR: &str = ",";
     let output_filename: String = format!("data/out.csv");
-
-    let mut data_storage =
-        DataStorage::<f64, _, ROW_SIZE, DATA_SIZE>::new(output_filename, DATAILE_SEPARATOR);
+    let mut data_storage = DataStorage::new(output_filename, DATAILE_SEPARATOR, DATA_SIZE);
 
     for i in 0..(3 * DATALEN) {
         /* fluctuating parameter */

@@ -8,11 +8,9 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     const TS: f64 = 100e-6;
 
     //Logging
-    const ROW_SIZE: usize = 3;
     const DATAFILE_SEPARATOR: &str = ",";
     const DATAFILE_PATH: &str = "data/out.csv";
-    let mut data_storage =
-        DataStorage::<f64, _, ROW_SIZE, SLOOP_NUM>::new(DATAFILE_PATH, DATAFILE_SEPARATOR);
+    let mut data_storage = DataStorage::new(DATAFILE_PATH, DATAFILE_SEPARATOR, SLOOP_NUM);
 
     let omega: f64 = 10.0;
     let numer: [f64; 2] = [2.0 * omega, omega.powi(2)];

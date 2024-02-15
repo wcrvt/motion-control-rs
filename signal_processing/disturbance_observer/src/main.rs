@@ -13,11 +13,9 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     const TP: f64 = TS / PLOOP_NUM as f64;
 
     //Logging
-    const ROW_SIZE: usize = TEST_NUM + 2;
     const DATAFILE_SEPARATOR: &str = ",";
     const DATAFILE_PATH: &str = "data/estimated.csv";
-    let mut data_storage =
-        DataStorage::<f64, _, ROW_SIZE, SLOOP_NUM>::new(DATAFILE_PATH, DATAFILE_SEPARATOR);
+    let mut data_storage = DataStorage::new(DATAFILE_PATH, DATAFILE_SEPARATOR, SLOOP_NUM);
 
     //Plant
     let kt: f64 = 1.2;
@@ -45,14 +43,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         tau_dis_est[3] = dob3.update(iq_ref, plant.d1x);
 
         //Logging
-        data_storage.add([
-            t,
-            tau_dis,
-            tau_dis_est[0],
-            tau_dis_est[1],
-            tau_dis_est[2],
-            tau_dis_est[3],
-        ]);
+        data_storage.add([ t, tau_dis, tau_dis_est[0], tau_dis_est[1], tau_dis_est[2], tau_dis_est[3] ]);
 
         //input
         iq_ref = -1.0 + 0.5 * (2.0 * std::f64::consts::PI * 3.0 * t);

@@ -14,19 +14,11 @@ fn main() -> Result<(), Box<dyn Error>> {
     const TP: f64 = TS / PLOOP_NUM as f64;
 
     //Logging
-    const ROW_SIZE_QUATE: usize = 13;
-    const ROW_SIZE_OMEGA: usize = 10;
     const DATAILE_SEPARATOR: &str = ",";
     let output_filename_quate: String = format!("data/quaternion.csv");
     let output_filename_omega: String = format!("data/omega.csv");
-    let mut data_storage_quate = DataStorage::<f64, _, ROW_SIZE_QUATE, SLOOP_NUM>::new(
-        output_filename_quate,
-        DATAILE_SEPARATOR,
-    );
-    let mut data_storage_omega = DataStorage::<f64, _, ROW_SIZE_OMEGA, SLOOP_NUM>::new(
-        output_filename_omega,
-        DATAILE_SEPARATOR,
-    );
+    let mut data_storage_quate = DataStorage::new(output_filename_quate, DATAILE_SEPARATOR, SLOOP_NUM);
+    let mut data_storage_omega = DataStorage::new(output_filename_omega, DATAILE_SEPARATOR, SLOOP_NUM);
 
     //rigid body
     let jb: [f64; 3] = [1.0, 2.0, 5.0];

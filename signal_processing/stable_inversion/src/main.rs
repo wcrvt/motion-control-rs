@@ -10,10 +10,9 @@ fn main() {
     let mut t: f64 = 0.0;
 
     //Logging
-    const ROW_SIZE: usize = 4;
     const DATAILE_SEPARATOR: &str = ",";
     let output_filename: String = format!("data/out.csv");
-    let mut data_storage = DataStorage::<f64, _, ROW_SIZE, SLOOP_NUM>::new(output_filename, DATAILE_SEPARATOR);
+    let mut data_storage = DataStorage::new(output_filename, DATAILE_SEPARATOR, SLOOP_NUM);
 
     //reference
     fn reference(t: f64) -> [f64; N] {
