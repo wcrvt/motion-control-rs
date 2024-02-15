@@ -96,8 +96,7 @@ impl <T: Float + std::fmt::Debug> GaussianProcessRegression<T> {
     }
 }
 
-
-pub fn inverse<T: Float + std::fmt::Debug>(m: &Vec<Vec<T>>) -> Option<Vec<Vec<T>>> {
+fn inverse<T: Float + std::fmt::Debug>(m: &Vec<Vec<T>>) -> Option<Vec<Vec<T>>> {
     
     let vlen: usize = m.len();
 
