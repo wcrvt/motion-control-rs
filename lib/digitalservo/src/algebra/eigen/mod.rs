@@ -1,4 +1,5 @@
 use super::*;
 
-mod qr_method;
+mod lu_decomposition;
+mod qr_decomposition;
 mod jacobi_eigenvalue;

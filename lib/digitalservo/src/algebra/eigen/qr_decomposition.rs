@@ -2,6 +2,7 @@ use num_traits::Float;
 use std::borrow::Borrow;
 use super::*;
 
+#[derive(Debug)]
 pub struct QRMatrix<T, const N: usize> {
     pub q: Matrix<T, N, N>,
     pub r: Matrix<T, N, N>
