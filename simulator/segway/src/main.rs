@@ -64,7 +64,7 @@ fn main() -> Result<(), Box<dyn Error>> {
 
         /* position controller */
         xcmd = if t < 5.0 { 0.2 } else { 0.0 };
-        theta_cmd = -(0.3 * (xcmd - plant.d0xm) - 0.3 * plant.d1xm) - 0.4 * plant.d1theta;
+        theta_cmd = -(0.35 * (xcmd - plant.d0xm) - 0.27 * plant.d1xm) - 0.4 * plant.d1theta;
         theta_cmd = if theta_cmd < -theta_lim {
             -theta_lim
         } else if theta_cmd > theta_lim {
