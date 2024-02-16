@@ -1,7 +1,5 @@
 use digitalservo::algebra::*;
 
-
-
 fn main() {
 
     let m = Matrix::from([
