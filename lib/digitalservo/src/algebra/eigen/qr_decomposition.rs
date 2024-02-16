@@ -55,12 +55,11 @@ impl <T: Float + Default, const N: usize> Eigen<T, N> {
         for i in 0..N {
             let p: Matrix<T, N, N> =(m - Matrix::diag(value[i] + mu)).inverse().unwrap();
             let mut y: Vector<T, N> = Vector::<T, N>::new();
-            for i in 0..N{
+            for i in 0..N {
                 y[i] = T::one() / T::from(N).unwrap().sqrt();
             }
             for _ in 0..ITER_EIGEN_VEC {
-                let k: Vector<T, N> = p * y;
-                y = k / (k.dot(k)).sqrt();
+                y = (p * y).normalize();
             }
             vector[i] = y.data;
         }
