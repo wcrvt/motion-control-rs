@@ -18,14 +18,14 @@ where [(); combination(N, R)]:
     }
 
     pub fn get_pair(&mut self) {
-        self.search_next(0, 0, [0; R]);
+        self.search_index(0, 0, [0; R]);
     }
 
-    fn search_next(&mut self, layer: usize, val: usize, mut pair: [usize; R]) {
+    fn search_index(&mut self, layer: usize, val: usize, mut pair: [usize; R]) {
         if val < N {
             if layer == 0 {
                 for i in 0..N {
-                    self.search_next(layer + 1, i, pair);
+                    self.search_index(layer + 1, i, pair);
                 }
             }
             else if layer == R {
@@ -35,7 +35,7 @@ where [(); combination(N, R)]:
             } else {
                 for i in (val + 1)..N {
                     pair[layer - 1] = val;
-                    self.search_next(layer + 1, i, pair);
+                    self.search_index(layer + 1, i, pair);
                 }
             }
         }
