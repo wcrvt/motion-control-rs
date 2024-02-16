@@ -7,6 +7,11 @@ use super::*;
 use std::borrow::Borrow;
 use std::ops::{Add, Mul};
 
+#[derive(Debug, Clone, Copy, PartialEq)]
+pub struct Vector<T, const ROWS: usize> {
+    pub data: [T; ROWS],
+}
+
 impl<T: Default + Copy, const ROWS: usize> Vector<T, ROWS> {
     pub fn new() -> Self {
         Self {

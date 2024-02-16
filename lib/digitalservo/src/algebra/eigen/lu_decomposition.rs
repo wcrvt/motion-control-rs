@@ -1,10 +1,8 @@
 use num_traits::Float;
 use std::borrow::Borrow;
 use super::*;
+use crate::combinatorics::*;
 
-pub const fn factorial(n: usize) -> usize {
-    if n == 1 { 1 } else { n * factorial(n - 1)}
-}
 
 #[derive(Debug)]
 pub struct LUPMatrix<T, const N: usize> {
@@ -17,28 +15,25 @@ impl <T: Float + Default, const N: usize> Eigen<T, N> {
     
     fn pivoting<S: Borrow<Matrix<T, N, N>>>(m: S) -> Option<Matrix<T, N, N>>
     where
-        [(); factorial(N)]:
+        [(); permutation(N, N)]:
     {
         let m = m.borrow();
         let mut p: Matrix<T, N, N> = Matrix::<T, N, N>::new();
-        let permutation: [[usize; N]; factorial(N)] = generate_permutation::<N>();
+        let permutations: [[usize; N]; permutation(N, N)] = generate_permutation_index::<N>();
 
         let mut iter: usize = 0;
         'outer: loop {
-            let pair: [usize; N] = permutation[iter];
+            let pair: [usize; N] = permutations[iter];
             for i in 0..N {
-                let k: usize = pair[i];
-                
-                if m[k][i] == T::zero() {
+                if m[pair[i]][i] == T::zero() {
                     iter += 1;
-                    if iter == factorial(N) { return None }
+                    if iter == permutation(N, N) { return None }
                     continue 'outer;
                 }
             }
             
             for i in 0..N {
-                let k: usize = pair[i];
-                p[i][k] = T::one()
+                p[i][pair[i]] = T::one()
             } 
             break;
         }
@@ -48,7 +43,7 @@ impl <T: Float + Default, const N: usize> Eigen<T, N> {
 
     pub fn doolittle_decomposition<S: Borrow<Matrix<T, N, N>>>(m: S) -> Option<LUPMatrix<T, N>>
     where
-        [(); factorial(N)]:
+        [(); permutation(N, N)]:
     {
         let mut m: Matrix<T, N, N> = m.borrow().clone();
         let mut l: Matrix<T, N, N> = Matrix::diag(T::one());
@@ -82,7 +77,7 @@ impl <T: Float + Default, const N: usize> Eigen<T, N> {
 
     pub fn crout_decomposition<S: Borrow<Matrix<T, N, N>>>(m: S) -> Option<LUPMatrix<T, N>>
     where
-        [(); factorial(N)]:
+        [(); permutation(N, N)]:
     {
 
         let mut m: Matrix<T, N, N> = m.borrow().clone();
@@ -117,35 +112,3 @@ impl <T: Float + Default, const N: usize> Eigen<T, N> {
 
 } 
 
-
-fn generate_permutation<const N: usize> () -> [[usize; N]; factorial(N)]
-where
-    [(); factorial(N)]:
-{
-
-    fn swap<T: Copy + Clone, S: Borrow<[T; N]>, const N: usize>(v: S, a: usize, b: usize) -> [T; N] {
-        let mut v: [T; N] = v.borrow().clone();
-        let buffer: T = v[a];
-        v[a] = v[b];
-        v[b] = buffer;
-        v
-    }
-
-    let mut base: [usize; N] = [0; N];
-    for i in 0..N { base[i] = i as usize; }
-
-    let mut cnt: usize = 0;
-    let mut ret: [[usize; N]; factorial(N)] = [[0; N]; factorial(N)];
-    ret[cnt] = base;
-    cnt += 1;
-
-    for n in 0 ..N {
-        for _ in 0..cnt {
-            for i in (n + 1)..N {
-                ret[cnt] = swap(base, n, i);
-                cnt += 1;
-            }
-        }
-    }
-    ret
-}

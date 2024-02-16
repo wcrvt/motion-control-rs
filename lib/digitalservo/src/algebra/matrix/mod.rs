@@ -7,6 +7,12 @@ mod math;
 use std::borrow::Borrow;
 use super::*;
 
+#[derive(Debug, Clone, Copy, PartialEq)]
+pub struct Matrix<T, const ROWS: usize, const COLS: usize> {
+    pub data: [[T; COLS]; ROWS],
+}
+
+
 impl<T, const ROWS: usize, const COLS: usize> Default for Matrix<T, ROWS, COLS>
 where
     T: Default + Copy,

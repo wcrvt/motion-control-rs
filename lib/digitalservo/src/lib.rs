@@ -2,6 +2,8 @@
 #![feature(generic_const_exprs)]
 
 pub mod algebra;
+pub mod combinatorics;
+
 pub mod data_storage;
 pub mod state_space;
 pub mod mclib;
