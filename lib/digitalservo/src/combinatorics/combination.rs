@@ -1,5 +1,11 @@
 use super::*;
 
+pub const fn combination(n: usize, r: usize) -> usize {
+    let m: usize = if r < n - r { r } else { n - r };
+    let r: usize = n - m + 1;
+    factorial_n_to_r(n, r) / factorial(m)
+}
+
 pub struct Combination <const N: usize, const R: usize>
 where [(); combination(N, R)]:
 {

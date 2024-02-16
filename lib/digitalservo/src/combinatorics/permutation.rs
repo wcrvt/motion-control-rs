@@ -1,5 +1,10 @@
 use super::*;
 
+pub const fn permutation(n: usize, r: usize) -> usize {
+    let r: usize = n - r + 1;
+    factorial_n_to_r(n, r)
+}
+
 fn swap<T: Copy, const N: usize>(mut v: [T; N], a: usize, b: usize) -> [T; N] {
     let buffer: T = v[a];
     v[a] = v[b];

@@ -12,14 +12,3 @@ pub const fn factorial(n: usize) -> usize {
 pub const fn factorial_n_to_r(n: usize, r: usize) -> usize {
     if n == r { r } else { n * factorial_n_to_r(n - 1, r)}
 }
-
-pub const fn permutation(n: usize, r: usize) -> usize {
-    let r: usize = n - r + 1;
-    factorial_n_to_r(n, r)
-}
-
-pub const fn combination(n: usize, r: usize) -> usize {
-    let m: usize = if r < n - r { r } else { n - r };
-    let r: usize = n - m + 1;
-    factorial_n_to_r(n, r) / factorial(m)
-}
