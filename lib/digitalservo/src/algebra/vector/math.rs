@@ -1,9 +1,9 @@
-use num_traits::Float;
 use super::*;
+use num_traits::Float;
 
 impl<T, const ROWS: usize> Vector<T, ROWS>
 where
-    T: Float + Default
+    T: Float + Default,
 {
     pub fn norm(&self) -> T {
         (self * self).sqrt()

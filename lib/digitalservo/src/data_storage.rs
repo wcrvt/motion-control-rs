@@ -16,28 +16,25 @@ where
     P: AsRef<Path>,
 {
     pub fn new(path: P, separator: &str, datalen: usize) -> Self {
-
         let mut parents: Vec<&Path> = vec![];
         let mut path_ref: &Path = path.as_ref();
         loop {
             match path_ref.parent() {
                 Some(parent) => {
                     if parent.is_dir() || parent == Path::new("") {
-                        break
+                        break;
                     };
                     parents.push(parent);
                     path_ref = parent;
                 }
-                None => {
-                    break
-                }
+                None => break,
             }
         }
 
         parents.reverse();
         for p in parents {
             match fs::create_dir(p) {
-                Ok(_) => {},
+                Ok(_) => {}
                 Err(e) => panic!("{:?}: {}", p, e),
             }
         }
@@ -47,7 +44,7 @@ where
             path,
             separator: separator.into(),
             cnt: 0,
-            datalen
+            datalen,
         }
     }
 

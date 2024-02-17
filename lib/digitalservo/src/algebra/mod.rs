@@ -1,7 +1,9 @@
+pub mod eigen;
+pub mod equation;
 pub mod matrix;
 pub mod vector;
-pub mod eigen;
 
+pub use eigen::*;
+pub use equation::*;
 pub use matrix::*;
 pub use vector::*;
-pub use eigen::*;

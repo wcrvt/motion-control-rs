@@ -1,5 +1,5 @@
 use super::*;
-use std::ops::{Add, Sub, Mul, Div};
+use std::ops::{Add, Div, Mul, Sub};
 
 /* add Vector */
 impl<T, S: Borrow<Vector<T, ROWS>>, const ROWS: usize> Add<S> for Vector<T, ROWS>
@@ -68,7 +68,9 @@ where
 }
 
 /* multiple by vector (dot product) */
-impl<T: Add<Output = T> + Mul<Output = T> + Default + Copy, const ROWS: usize> Mul<&Self> for Vector<T, ROWS> {
+impl<T: Add<Output = T> + Mul<Output = T> + Default + Copy, const ROWS: usize> Mul<&Self>
+    for Vector<T, ROWS>
+{
     type Output = T;
 
     fn mul(self, other: &Self) -> Self::Output {
@@ -80,7 +82,9 @@ impl<T: Add<Output = T> + Mul<Output = T> + Default + Copy, const ROWS: usize> M
     }
 }
 
-impl<T: Add<Output = T> + Mul<Output = T> + Default + Copy, const ROWS: usize> Mul<Self> for Vector<T, ROWS> {
+impl<T: Add<Output = T> + Mul<Output = T> + Default + Copy, const ROWS: usize> Mul<Self>
+    for Vector<T, ROWS>
+{
     type Output = T;
 
     fn mul(self, other: Self) -> Self::Output {
@@ -92,7 +96,9 @@ impl<T: Add<Output = T> + Mul<Output = T> + Default + Copy, const ROWS: usize> M
     }
 }
 
-impl<T: Add<Output = T> + Mul<Output = T> + Default + Copy, const ROWS: usize> Mul<Self> for &Vector<T, ROWS> {
+impl<T: Add<Output = T> + Mul<Output = T> + Default + Copy, const ROWS: usize> Mul<Self>
+    for &Vector<T, ROWS>
+{
     type Output = T;
 
     fn mul(self, other: Self) -> Self::Output {
@@ -104,7 +110,9 @@ impl<T: Add<Output = T> + Mul<Output = T> + Default + Copy, const ROWS: usize> M
     }
 }
 
-impl<T: Add<Output = T> + Mul<Output = T> + Default + Copy, const ROWS: usize> Mul<&Self> for &Vector<T, ROWS> {
+impl<T: Add<Output = T> + Mul<Output = T> + Default + Copy, const ROWS: usize> Mul<&Self>
+    for &Vector<T, ROWS>
+{
     type Output = T;
 
     fn mul(self, other: &Self) -> Self::Output {

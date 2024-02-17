@@ -1,8 +1,7 @@
-use num_traits::Float;
-use std::borrow::Borrow;
 use super::*;
 use crate::combinatorics::*;
-
+use num_traits::Float;
+use std::borrow::Borrow;
 
 #[derive(Debug)]
 pub struct LUPMatrix<T, const N: usize> {
@@ -11,11 +10,10 @@ pub struct LUPMatrix<T, const N: usize> {
     pub p: Matrix<T, N, N>,
 }
 
-impl <T: Float + Default, const N: usize> Eigen<T, N> {
-    
+impl<T: Float + Default, const N: usize> Eigen<T, N> {
     fn pivoting<S: Borrow<Matrix<T, N, N>>>(m: S) -> Option<Matrix<T, N, N>>
     where
-        [(); permutation(N, N)]:
+        [(); permutation(N, N)]:,
     {
         let m = m.borrow();
         let mut p: Matrix<T, N, N> = Matrix::<T, N, N>::new();
@@ -27,14 +25,16 @@ impl <T: Float + Default, const N: usize> Eigen<T, N> {
             for i in 0..N {
                 if m[pair[i]][i] == T::zero() {
                     iter += 1;
-                    if iter == permutation(N, N) { return None }
+                    if iter == permutation(N, N) {
+                        return None;
+                    }
                     continue 'outer;
                 }
             }
-            
+
             for i in 0..N {
                 p[i][pair[i]] = T::one()
-            } 
+            }
             break;
         }
 
@@ -43,7 +43,7 @@ impl <T: Float + Default, const N: usize> Eigen<T, N> {
 
     pub fn doolittle_decomposition<S: Borrow<Matrix<T, N, N>>>(m: S) -> Option<LUPMatrix<T, N>>
     where
-        [(); permutation(N, N)]:
+        [(); permutation(N, N)]:,
     {
         let mut m: Matrix<T, N, N> = m.borrow().clone();
         let mut l: Matrix<T, N, N> = Matrix::diag(T::one());
@@ -51,9 +51,9 @@ impl <T: Float + Default, const N: usize> Eigen<T, N> {
 
         let p: Matrix<T, N, N> = match Self::pivoting(m) {
             Some(p) => p,
-            None => { return None }
+            None => return None,
         };
-        
+
         m = p * m;
 
         //right-looking algorithm
@@ -72,23 +72,22 @@ impl <T: Float + Default, const N: usize> Eigen<T, N> {
 
         u[N - 1][N - 1] = m[N - 1][N - 1];
 
-        Some(LUPMatrix {l, u, p})
+        Some(LUPMatrix { l, u, p })
     }
 
     pub fn crout_decomposition<S: Borrow<Matrix<T, N, N>>>(m: S) -> Option<LUPMatrix<T, N>>
     where
-        [(); permutation(N, N)]:
+        [(); permutation(N, N)]:,
     {
-
         let mut m: Matrix<T, N, N> = m.borrow().clone();
         let mut l: Matrix<T, N, N> = Matrix::new();
         let mut u: Matrix<T, N, N> = Matrix::diag(T::one());
 
         let p: Matrix<T, N, N> = match Self::pivoting(m) {
             Some(p) => p,
-            None => { return None }
+            None => return None,
         };
-        
+
         m = p * m;
 
         //right-looking algorithm
@@ -107,8 +106,6 @@ impl <T: Float + Default, const N: usize> Eigen<T, N> {
 
         l[N - 1][N - 1] = m[N - 1][N - 1];
 
-        Some(LUPMatrix {l, u, p})
+        Some(LUPMatrix { l, u, p })
     }
-
-} 
-
+}

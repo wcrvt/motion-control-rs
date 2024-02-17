@@ -1,17 +1,16 @@
 mod binary_operation;
 mod compound_assignment;
-mod inverse;
 mod indexing;
+mod inverse;
 mod math;
 
-use std::borrow::Borrow;
 use super::*;
+use std::borrow::Borrow;
 
 #[derive(Debug, Clone, Copy, PartialEq)]
 pub struct Matrix<T, const ROWS: usize, const COLS: usize> {
     pub data: [[T; COLS]; ROWS],
 }
-
 
 impl<T, const ROWS: usize, const COLS: usize> Default for Matrix<T, ROWS, COLS>
 where
@@ -26,7 +25,7 @@ where
 impl<T, S, const ROWS: usize, const COLS: usize> From<S> for Matrix<T, ROWS, COLS>
 where
     T: Default + Copy,
-    S: Borrow<[[T; COLS]; ROWS]>
+    S: Borrow<[[T; COLS]; ROWS]>,
 {
     fn from(data: S) -> Matrix<T, ROWS, COLS> {
         let data = data.borrow();
@@ -77,7 +76,7 @@ where
 /* transpose */
 impl<T, const ROWS: usize, const COLS: usize> Matrix<T, ROWS, COLS>
 where
-    T: Default + Copy
+    T: Default + Copy,
 {
     pub fn transpose(&self) -> Matrix<T, COLS, ROWS> {
         let mut result = Matrix::<T, COLS, ROWS>::default();

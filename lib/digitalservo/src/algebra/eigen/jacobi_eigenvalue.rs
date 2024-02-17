@@ -1,10 +1,8 @@
+use super::*;
 use num_traits::Float;
 use std::borrow::Borrow;
-use super::*;
 
-
-impl <T: Float + Default, const N: usize> Eigen<T, N> {
-    
+impl<T: Float + Default, const N: usize> Eigen<T, N> {
     fn givens_rotation(i: usize, j: usize, theta: T) -> Matrix<T, N, N> {
         let mut ret: Matrix<T, N, N> = Matrix::<T, N, N>::diag(T::one());
         let c: T = theta.cos();
@@ -17,7 +15,7 @@ impl <T: Float + Default, const N: usize> Eigen<T, N> {
         ret
     }
 
-    fn search_absolute_maximum(m: &Matrix<T, N, N>) -> [usize; 2]{
+    fn search_absolute_maximum(m: &Matrix<T, N, N>) -> [usize; 2] {
         let mut id: [usize; 2] = [0, 1];
         let mut max: T = m[id[0]][id[1]];
         for i in 0..N {
@@ -35,7 +33,7 @@ impl <T: Float + Default, const N: usize> Eigen<T, N> {
         let m = m.borrow();
         let mut diag: Matrix<T, N, N> = m.clone();
         let mut p_matrix: Matrix<T, N, N> = Matrix::<T, N, N>::diag(T::one());
-        
+
         let mut i: usize = 0;
         loop {
             let id: [usize; 2] = Self::search_absolute_maximum(&diag);
@@ -58,8 +56,12 @@ impl <T: Float + Default, const N: usize> Eigen<T, N> {
                     }
                 }
             }
-            if nondiag_norm < T::from(1e-10).unwrap() { break }
-            if i > N * N { break }
+            if nondiag_norm < T::from(1e-10).unwrap() {
+                break;
+            }
+            if i > N * N {
+                break;
+            }
             i += 1;
         }
 

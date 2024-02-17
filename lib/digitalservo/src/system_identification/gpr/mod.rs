@@ -14,10 +14,10 @@ pub struct GaussianProcessRegression<T> {
 #[derive(Debug)]
 pub struct PredictedValue<T> {
     pub mean: T,
-    pub stdev: T
+    pub stdev: T,
 }
 
-impl <T: Float + std::fmt::Debug> GaussianProcessRegression<T> {
+impl<T: Float + std::fmt::Debug> GaussianProcessRegression<T> {
     pub fn new(kernel: fn(T, T) -> T, sigma: T) -> Self {
         Self {
             x_sample: vec![],
@@ -27,7 +27,7 @@ impl <T: Float + std::fmt::Debug> GaussianProcessRegression<T> {
             kernel,
             sense_variance: sigma,
             inv_cov: vec![vec![]],
-            sample: 0
+            sample: 0,
         }
     }
 
@@ -46,12 +46,11 @@ impl <T: Float + std::fmt::Debug> GaussianProcessRegression<T> {
                 self.x_min = x;
             }
         }
-        
+
         self.sample += 1;
     }
 
     pub fn predict(&mut self, x: T) -> PredictedValue<T> {
-
         if self.inv_cov.len() != self.sample {
             let mut buffer: Vec<Vec<T>> = vec![vec![T::zero(); self.sample]; self.sample];
             for i in 0..self.sample {
@@ -89,15 +88,15 @@ impl <T: Float + std::fmt::Debug> GaussianProcessRegression<T> {
             buffer2 = buffer2 + k[i] * buffer1[i]
         }
 
-        let stdev: T = ((self.kernel)(x, x) - buffer2 + self.sense_variance).abs().sqrt();
+        let stdev: T = ((self.kernel)(x, x) - buffer2 + self.sense_variance)
+            .abs()
+            .sqrt();
 
         PredictedValue { mean, stdev }
-
     }
 }
 
 fn inverse<T: Float + std::fmt::Debug>(m: &Vec<Vec<T>>) -> Option<Vec<Vec<T>>> {
-    
     let vlen: usize = m.len();
 
     let mut m1: Vec<Vec<T>> = m.clone();

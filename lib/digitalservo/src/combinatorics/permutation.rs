@@ -12,12 +12,14 @@ fn swap<T: Copy, const N: usize>(mut v: [T; N], a: usize, b: usize) -> [T; N] {
     v
 }
 
-pub fn generate_permutation_index<const N: usize> () -> [[usize; N]; permutation(N, N)]
+pub fn generate_permutation_index<const N: usize>() -> [[usize; N]; permutation(N, N)]
 where
-    [(); permutation(N, N)]:
+    [(); permutation(N, N)]:,
 {
     let mut base: [usize; N] = [0; N];
-    for i in 0..N { base[i] = i as usize; }
+    for i in 0..N {
+        base[i] = i as usize;
+    }
 
     let mut cnt: usize = 0;
     let mut ret: [[usize; N]; permutation(N, N)] = [[0; N]; permutation(N, N)];

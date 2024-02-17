@@ -1,5 +1,5 @@
 use super::*;
-use std::ops::{Add, AddAssign, Sub, SubAssign, Mul, MulAssign, Div, DivAssign};
+use std::ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Sub, SubAssign};
 
 /* add */
 impl<T, S, const ROWS: usize> AddAssign<S> for Vector<T, ROWS>

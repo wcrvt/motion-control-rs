@@ -1,6 +1,6 @@
 use num_traits::Float;
 
-pub struct StableInverter <T, F1, const N: usize> {
+pub struct StableInverter<T, F1, const N: usize> {
     reference: F1,
     f_stable: Option<fn(T) -> T>,
     f_unstable: Option<fn(T) -> T>,
@@ -8,15 +8,19 @@ pub struct StableInverter <T, F1, const N: usize> {
     dt: T,
 }
 
-impl <T: Float + std::ops::AddAssign, F1: Fn(T) -> [T; N], const N: usize> StableInverter<T, F1, N> {
-
-    pub fn new(reference: F1, f_stable: Option<fn(T) -> T>, f_unstable: Option<fn(T) -> T>, t_max: T) -> Self {
+impl<T: Float + std::ops::AddAssign, F1: Fn(T) -> [T; N], const N: usize> StableInverter<T, F1, N> {
+    pub fn new(
+        reference: F1,
+        f_stable: Option<fn(T) -> T>,
+        f_unstable: Option<fn(T) -> T>,
+        t_max: T,
+    ) -> Self {
         Self {
             reference,
             f_stable,
             f_unstable,
             t_max,
-            dt: T::from(1e-5).unwrap()
+            dt: T::from(1e-5).unwrap(),
         }
     }
 

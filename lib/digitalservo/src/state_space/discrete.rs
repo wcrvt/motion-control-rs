@@ -1,23 +1,23 @@
-use num_traits::Float;
 use crate::algebra::*;
+use num_traits::Float;
 
 use super::continuous;
 
 #[derive(Debug, Copy, Clone)]
 pub struct SSR<T, const N: usize> {
-    pub a: Matrix::<T, N, N>,
+    pub a: Matrix<T, N, N>,
     pub b: Vector<T, N>,
     pub c: Vector<T, N>,
     pub ts: T,
 }
 
-impl <T: Float + Default, const N: usize> SSR<T, N> {
+impl<T: Float + Default, const N: usize> SSR<T, N> {
     pub fn new(ts: T) -> Self {
         Self {
             a: Matrix::new(),
             b: Vector::new(),
             c: Vector::new(),
-            ts
+            ts,
         }
     }
 
@@ -26,7 +26,7 @@ impl <T: Float + Default, const N: usize> SSR<T, N> {
             a: Matrix::from(a),
             b: Vector::from(b),
             c: Vector::from(c),
-            ts
+            ts,
         }
     }
 
@@ -46,9 +46,7 @@ impl <T: Float + Default, const N: usize> SSR<T, N> {
         let c: Vector<T, N> = c_ssr.c;
         Self { a, b, c, ts }
     }
-
 }
-
 
 pub struct Plant<T, const N: usize> {
     ssr: SSR<T, N>,
@@ -56,7 +54,7 @@ pub struct Plant<T, const N: usize> {
     pub y: T,
 }
 
-impl <T: Float + Default, const N: usize> Plant<T, N> {
+impl<T: Float + Default, const N: usize> Plant<T, N> {
     pub fn new(ssr: &SSR<T, N>) -> Self {
         Self {
             ssr: ssr.clone(),
@@ -66,7 +64,7 @@ impl <T: Float + Default, const N: usize> Plant<T, N> {
     }
 
     pub fn update(&mut self, u: T) {
-        self.x =  self.ssr.a * self.x + self.ssr.b * u; 
+        self.x = self.ssr.a * self.x + self.ssr.b * u;
         self.y = self.ssr.c.dot(self.x);
     }
 }

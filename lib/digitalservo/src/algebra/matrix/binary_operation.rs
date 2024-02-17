@@ -1,6 +1,6 @@
-use std::borrow::Borrow;
-use std::ops::{Add, Sub, Mul, Div};
 use super::*;
+use std::borrow::Borrow;
+use std::ops::{Add, Div, Mul, Sub};
 
 /* add matrix */
 impl<T, S, const ROWS: usize, const COLS: usize> Add<S> for Matrix<T, ROWS, COLS>
@@ -81,7 +81,8 @@ where
 }
 
 /* multiple by matrix */
-impl<T, const K: usize, const ROWS: usize, const COLS: usize> Mul<Matrix<T, COLS, K>> for Matrix<T, ROWS, COLS>
+impl<T, const K: usize, const ROWS: usize, const COLS: usize> Mul<Matrix<T, COLS, K>>
+    for Matrix<T, ROWS, COLS>
 where
     T: Add<Output = T> + Mul<Output = T> + Default + Copy,
 {
@@ -102,7 +103,8 @@ where
     }
 }
 
-impl<T, const K: usize, const ROWS: usize, const COLS: usize> Mul<&Matrix<T, COLS, K>> for Matrix<T, ROWS, COLS>
+impl<T, const K: usize, const ROWS: usize, const COLS: usize> Mul<&Matrix<T, COLS, K>>
+    for Matrix<T, ROWS, COLS>
 where
     T: Add<Output = T> + Mul<Output = T> + Default + Copy,
 {
@@ -123,7 +125,8 @@ where
     }
 }
 
-impl<T, const K: usize, const ROWS: usize, const COLS: usize> Mul<Matrix<T, COLS, K>> for &Matrix<T, ROWS, COLS>
+impl<T, const K: usize, const ROWS: usize, const COLS: usize> Mul<Matrix<T, COLS, K>>
+    for &Matrix<T, ROWS, COLS>
 where
     T: Add<Output = T> + Mul<Output = T> + Default + Copy,
 {
@@ -144,7 +147,8 @@ where
     }
 }
 
-impl<T, const K: usize, const ROWS: usize, const COLS: usize> Mul<&Matrix<T, COLS, K>> for &Matrix<T, ROWS, COLS>
+impl<T, const K: usize, const ROWS: usize, const COLS: usize> Mul<&Matrix<T, COLS, K>>
+    for &Matrix<T, ROWS, COLS>
 where
     T: Add<Output = T> + Mul<Output = T> + Default + Copy,
 {
@@ -243,7 +247,8 @@ where
 }
 
 /* multiple by scalar */
-impl<T: Mul<Output = T> + Default + Copy, const ROWS: usize, const COLS: usize> Mul<T> for Matrix<T, ROWS, COLS>
+impl<T: Mul<Output = T> + Default + Copy, const ROWS: usize, const COLS: usize> Mul<T>
+    for Matrix<T, ROWS, COLS>
 {
     type Output = Matrix<T, ROWS, COLS>;
 
@@ -258,7 +263,8 @@ impl<T: Mul<Output = T> + Default + Copy, const ROWS: usize, const COLS: usize> 
     }
 }
 
-impl<T: Mul<Output = T> + Default + Copy, const ROWS: usize, const COLS: usize> Mul<T> for &Matrix<T, ROWS, COLS>
+impl<T: Mul<Output = T> + Default + Copy, const ROWS: usize, const COLS: usize> Mul<T>
+    for &Matrix<T, ROWS, COLS>
 {
     type Output = Matrix<T, ROWS, COLS>;
 
@@ -274,7 +280,8 @@ impl<T: Mul<Output = T> + Default + Copy, const ROWS: usize, const COLS: usize> 
 }
 
 /* divide by scalar */
-impl<T: Div<Output = T> + Default + Copy, const ROWS: usize, const COLS: usize> Div<T> for Matrix<T, ROWS, COLS>
+impl<T: Div<Output = T> + Default + Copy, const ROWS: usize, const COLS: usize> Div<T>
+    for Matrix<T, ROWS, COLS>
 {
     type Output = Matrix<T, ROWS, COLS>;
 
@@ -289,7 +296,8 @@ impl<T: Div<Output = T> + Default + Copy, const ROWS: usize, const COLS: usize> 
     }
 }
 
-impl<T: Div<Output = T> + Default + Copy, const ROWS: usize, const COLS: usize> Div<T> for &Matrix<T, ROWS, COLS>
+impl<T: Div<Output = T> + Default + Copy, const ROWS: usize, const COLS: usize> Div<T>
+    for &Matrix<T, ROWS, COLS>
 {
     type Output = Matrix<T, ROWS, COLS>;
 

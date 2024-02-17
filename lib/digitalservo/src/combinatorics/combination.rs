@@ -1,25 +1,31 @@
 use super::*;
 
 pub const fn combination(n: usize, r: usize) -> usize {
-    let m: usize = if r < n - r { r } else { n - r };
-    let r: usize = n - m + 1;
-    factorial_n_to_r(n, r) / factorial(m)
+    if r >= n || r <= 0 {
+        1
+    } else {
+        let m: usize = if r < n - r { r } else { n - r };
+        let r: usize = n - m + 1;
+        factorial_n_to_r(n, r) / factorial(m)
+    }
 }
 
-pub struct Combination <const N: usize, const R: usize>
-where [(); combination(N, R)]:
+pub struct Combination<const N: usize, const R: usize>
+where
+    [(); combination(N, R)]:,
 {
     pub combination: [[usize; R]; combination(N, R)],
     pub cnt: usize,
 }
 
-impl <const N: usize, const R: usize> Combination<N, R>
-where [(); combination(N, R)]:
+impl<const N: usize, const R: usize> Combination<N, R>
+where
+    [(); combination(N, R)]:,
 {
     pub fn new() -> Self {
         Self {
             combination: [[0; R]; combination(N, R)],
-            cnt : 0,
+            cnt: 0,
         }
     }
 
@@ -33,8 +39,7 @@ where [(); combination(N, R)]:
                 for i in 0..N {
                     self.search_index(layer + 1, i, combination);
                 }
-            }
-            else if layer == R {
+            } else if layer == R {
                 combination[layer - 1] = val;
                 self.combination[self.cnt] = combination;
                 self.cnt += 1;
@@ -48,8 +53,8 @@ where [(); combination(N, R)]:
     }
 }
 
-
-pub fn generate_combination_index<const N: usize, const R: usize> () -> [[usize; R]; combination(N, R)] {
+pub fn generate_combination_index<const N: usize, const R: usize>(
+) -> [[usize; R]; combination(N, R)] {
     let mut combi: Combination<N, R> = Combination::<N, R>::new();
     combi.get_combination();
     combi.combination

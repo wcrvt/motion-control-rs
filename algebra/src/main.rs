@@ -1,7 +1,10 @@
+
 fn main() {
 
-   use digitalservo::combinatorics::*;
-   println!("{:?}", generate_combination_index::<4, 2>());
+
+    use digitalservo::algebra::dka_method::dka_method;
+    let a = dka_method([1.0, -3.0, 2.0]);
+    println!("{a:.04?}");
 
 
     // use digitalservo::algebra::*;

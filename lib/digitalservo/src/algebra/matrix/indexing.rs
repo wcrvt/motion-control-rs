@@ -3,7 +3,7 @@ use std::ops::{Index, IndexMut};
 
 impl<T, const ROWS: usize, const COLS: usize> Index<usize> for Matrix<T, ROWS, COLS>
 where
-    T: Default + Copy
+    T: Default + Copy,
 {
     type Output = [T; COLS];
 
@@ -14,7 +14,7 @@ where
 
 impl<T, const ROWS: usize, const COLS: usize> IndexMut<usize> for Matrix<T, ROWS, COLS>
 where
-    T: Default + Copy
+    T: Default + Copy,
 {
     fn index_mut(&mut self, index: usize) -> &mut [T; COLS] {
         &mut self.data[index]
@@ -23,7 +23,7 @@ where
 
 impl<T, const N: usize> Matrix<T, N, N>
 where
-    T: Default + Copy
+    T: Default + Copy,
 {
     pub fn row(&self, n: usize) -> [T; N] {
         self[n]

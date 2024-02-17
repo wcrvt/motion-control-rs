@@ -1,7 +1,6 @@
-use std::borrow::Borrow;
-use std::ops::{Add, AddAssign, Sub, SubAssign, Mul, MulAssign, Div, DivAssign};
 use super::*;
-
+use std::borrow::Borrow;
+use std::ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Sub, SubAssign};
 
 /* add */
 impl<T, S, const ROWS: usize, const COLS: usize> AddAssign<S> for Matrix<T, ROWS, COLS>

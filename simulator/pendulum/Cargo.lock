@@ -12,6 +12,7 @@ checksum = "d468802bab17cbc0cc575e9b053f41e72aa36bfa6b7f55e3529ffa43161b97fa"
 name = "digitalservo"
 version = "0.1.0"
 dependencies = [
+ "num-complex",
  "num-traits",
 ]
 
@@ -20,6 +21,15 @@ name = "manipulator_rs"
 version = "0.1.0"
 dependencies = [
  "digitalservo",
+ "num-traits",
+]
+
+[[package]]
+name = "num-complex"
+version = "0.4.5"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "23c6602fda94a57c990fe0df199a035d83576b496aa29f4e634a8ac6004e68a6"
+dependencies = [
  "num-traits",
 ]
 

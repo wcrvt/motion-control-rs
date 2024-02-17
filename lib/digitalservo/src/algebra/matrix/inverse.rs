@@ -1,9 +1,8 @@
-use num_traits::Float;
 use super::*;
+use num_traits::Float;
 
 impl<T: Float + Default, const N: usize> Matrix<T, N, N> {
     pub fn inverse(&self) -> Option<Matrix<T, N, N>> {
-        
         let mut m1: Matrix<T, N, N> = self.clone();
         let mut m2: Matrix<T, N, N> = Matrix::diag(T::one());
 
@@ -49,7 +48,6 @@ impl<T: Float + Default, const N: usize> Matrix<T, N, N> {
         Some(m2)
     }
 }
-
 
 impl<T: Float + Default, const ROWS: usize, const COLS: usize> Matrix<T, ROWS, COLS> {
     pub fn inverse_underdetermined(&self) -> Option<Matrix<T, COLS, ROWS>> {

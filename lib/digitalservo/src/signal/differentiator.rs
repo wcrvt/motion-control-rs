@@ -33,7 +33,8 @@ where
         /* see https://digitalservo.jp/library/linear-control-design/observer-design/minimal-order-observer/ */
 
         //system matrix
-        let a_11: Matrix<T, { DIFF_ORDER + FILT_ORDER }, { DIFF_ORDER + FILT_ORDER }> = jordan_block(T::zero());
+        let a_11: Matrix<T, { DIFF_ORDER + FILT_ORDER }, { DIFF_ORDER + FILT_ORDER }> =
+            jordan_block(T::zero());
         let a_12: Vector<T, { DIFF_ORDER + FILT_ORDER }> = Vector::new();
         let mut a_21: Vector<T, { DIFF_ORDER + FILT_ORDER }> = Vector::new();
         a_21[0] = T::one();
@@ -41,7 +42,8 @@ where
 
         //matrices for state observer
         let ty: Vector<T, { DIFF_ORDER + FILT_ORDER }> = a_12 - g * a_22;
-        let tz: Matrix<T, { DIFF_ORDER + FILT_ORDER }, { DIFF_ORDER + FILT_ORDER }> = a_11 - g.outer(a_21);
+        let tz: Matrix<T, { DIFF_ORDER + FILT_ORDER }, { DIFF_ORDER + FILT_ORDER }> =
+            a_11 - g.outer(a_21);
 
         //initialize
         let py: Vector<T, { DIFF_ORDER + FILT_ORDER }> = Vector::new();
