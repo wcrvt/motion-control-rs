@@ -9,18 +9,18 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "d468802bab17cbc0cc575e9b053f41e72aa36bfa6b7f55e3529ffa43161b97fa"
 
 [[package]]
-name = "bode_diagram"
-version = "0.1.0"
-dependencies = [
- "digitalservo",
-]
-
-[[package]]
 name = "digitalservo"
 version = "0.1.0"
 dependencies = [
  "num-complex",
  "num-traits",
+]
+
+[[package]]
+name = "frequency_response"
+version = "0.1.0"
+dependencies = [
+ "digitalservo",
 ]
 
 [[package]]

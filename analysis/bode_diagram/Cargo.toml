@@ -1,7 +1,0 @@
-[package]
-name = "bode_diagram"
-version = "0.1.0"
-edition = "2021"
-
-[dependencies]
-digitalservo = {path = "../../lib/digitalservo"}

@@ -1,6 +1,6 @@
 reset
 
-data = "../data/bode.csv"
+data = "../data/frequency_response_s.csv"
 
 set datafile separator ","
 set grid
