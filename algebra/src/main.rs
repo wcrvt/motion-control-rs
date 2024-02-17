@@ -1,11 +1,9 @@
 
 fn main() {
 
-
     use digitalservo::algebra::dka_method::dka_method;
     let a = dka_method([1.0, -3.0, 2.0]);
     println!("{a:.04?}");
-
 
     // use digitalservo::algebra::*;
     // let m = Matrix::from([
