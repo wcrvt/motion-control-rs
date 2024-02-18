@@ -7,9 +7,9 @@ where
     [(); ORDER + 1]:,
 {
     ts: T,
-    pub kt: T,
-    pub jm: T,
-    g: Vector<T, { ORDER + 1 }>,
+    kt: T,
+    jm: T,
+    g:  Vector<T, { ORDER + 1 }>,
     tu: Vector<T, { ORDER + 1 }>,
     ty: Vector<T, { ORDER + 1 }>,
     tz: Matrix<T, { ORDER + 1 }, { ORDER + 1 }>,
@@ -35,8 +35,7 @@ where
         /* see https://digitalservo.jp/library/linear-control-design/observer-design/minimal-order-observer/ */
 
         //system matrix
-        let a_11: Matrix<T, { ORDER + 1 }, { ORDER + 1 }> =
-            jordan_block::<T, { ORDER + 1 }>(T::zero());
+        let a_11: Matrix<T, { ORDER + 1 }, { ORDER + 1 }> = jordan_block::<T, { ORDER + 1 }>(T::zero());
         let a_12: Vector<T, { ORDER + 1 }> = Vector::new();
         let mut a_21: Vector<T, { ORDER + 1 }> = Vector::new();
         a_21[0] = T::one() / jm;
@@ -55,17 +54,7 @@ where
         let py: Vector<T, { ORDER + 1 }> = Vector::new();
         let py0_z1: T = T::zero();
 
-        Self {
-            ts,
-            kt,
-            jm,
-            g,
-            tu,
-            ty,
-            tz,
-            py,
-            py0_z1,
-        }
+        Self {ts, kt, jm, g, tu, ty, tz, py, py0_z1}
     }
 
     pub fn set_kt(mut self, kt: T) -> Self {
