@@ -11,7 +11,6 @@ pub mod observer;
 pub mod plant;
 pub mod signal;
 pub mod state_space;
-pub mod statistics;
 pub mod system_identification;
 
 //Re-export
