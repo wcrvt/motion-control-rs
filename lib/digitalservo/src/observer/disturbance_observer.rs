@@ -96,7 +96,7 @@ fn jordan_block<T: Float + Default, const ORDER: usize>(lambda: T) -> Matrix<T, 
     ret
 }
 
-pub fn pascal_triangle<T: Float + Default, const ORDER: usize>() -> [T; ORDER] {
+fn pascal_triangle<T: Float + Default, const ORDER: usize>() -> [T; ORDER] {
     let mut ret: [T; ORDER] = [T::one(); ORDER];
     for i in 1..ORDER {
         for j in 1..(ORDER - i) {
