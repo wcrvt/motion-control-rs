@@ -1,8 +1,9 @@
 use super::*;
 use num_traits::Float;
 use std::borrow::Borrow;
+use std:: ops::AddAssign;
 
-impl<T: Float + Default, const N: usize> Eigen<T, N> {
+impl<T: Float + Default + AddAssign, const N: usize> Eigen<T, N> {
     fn givens_rotation(i: usize, j: usize, theta: T) -> Matrix<T, N, N> {
         let mut ret: Matrix<T, N, N> = Matrix::<T, N, N>::diag(T::one());
         let c: T = theta.cos();

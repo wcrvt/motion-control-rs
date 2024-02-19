@@ -1,7 +1,9 @@
+use std::ops::MulAssign;
+
 use super::*;
 use num_traits::Float;
 
-impl<T: Float + Default, const N: usize> Matrix<T, N, N> {
+impl<T: Float + Default + MulAssign, const N: usize> Matrix<T, N, N> {
     pub fn inverse(&self) -> Option<Matrix<T, N, N>> {
         let mut m1: Matrix<T, N, N> = self.clone();
         let mut m2: Matrix<T, N, N> = Matrix::diag(T::one());
@@ -30,8 +32,8 @@ impl<T: Float + Default, const N: usize> Matrix<T, N, N> {
 
             let scaler: T = T::one() / m1[i][i];
             for j in 0..N {
-                m1[i][j] = m1[i][j] * scaler;
-                m2[i][j] = m2[i][j] * scaler;
+                m1[i][j] *= scaler;
+                m2[i][j] *= scaler;
             }
 
             for j in 0..N {
@@ -49,7 +51,7 @@ impl<T: Float + Default, const N: usize> Matrix<T, N, N> {
     }
 }
 
-impl<T: Float + Default, const ROWS: usize, const COLS: usize> Matrix<T, ROWS, COLS> {
+impl<T: Float + Default + MulAssign, const ROWS: usize, const COLS: usize> Matrix<T, ROWS, COLS> {
     pub fn inverse_underdetermined(&self) -> Option<Matrix<T, COLS, ROWS>> {
         if ROWS > COLS {
             return None;

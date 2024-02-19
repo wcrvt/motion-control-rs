@@ -1,3 +1,5 @@
+use std::ops::MulAssign;
+
 use crate::algebra::*;
 use num_traits::Float;
 
@@ -19,7 +21,7 @@ pub struct SeriesLinkManipulator<T: Float> {
     ts: T,
 }
 
-impl<T: Float + Default + std::ops::AddAssign> SeriesLinkManipulator<T> {
+impl<T: Float + Default + std::ops::AddAssign + MulAssign> SeriesLinkManipulator<T> {
     pub fn new(
         kt: [T; JOINTSPACE_DIM],
         jm: [T; JOINTSPACE_DIM],

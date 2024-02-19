@@ -1,3 +1,5 @@
+use std::ops::{AddAssign, SubAssign};
+
 use crate::algebra::*;
 use num_traits::Float;
 
@@ -11,7 +13,7 @@ where
     sigma_w: T,
 }
 
-impl<T: Float + Default, const N: usize> KalmanFilter<T, N>
+impl<T: Float + Default + AddAssign + SubAssign, const N: usize> KalmanFilter<T, N>
 where
     [(); N + 1]:,
 {

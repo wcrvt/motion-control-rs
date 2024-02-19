@@ -1,3 +1,5 @@
+use std::ops::AddAssign;
+
 use crate::algebra::*;
 use num_traits::Float;
 
@@ -25,7 +27,7 @@ pub struct Plant<T, const N: usize> {
     ts: T,
 }
 
-impl<T: Float + Default, const N: usize> Plant<T, N> {
+impl<T: Float + Default + AddAssign, const N: usize> Plant<T, N> {
     pub fn new(ssr: &SSR<T, N>, ts: T) -> Self {
         Self {
             ssr: ssr.clone(),

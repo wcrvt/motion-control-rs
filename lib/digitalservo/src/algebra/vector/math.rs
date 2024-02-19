@@ -1,9 +1,11 @@
+use std::ops::AddAssign;
+
 use super::*;
 use num_traits::Float;
 
 impl<T, const ROWS: usize> Vector<T, ROWS>
 where
-    T: Float + Default,
+    T: Float + Default + AddAssign,
 {
     pub fn norm(&self) -> T {
         (self * self).sqrt()
@@ -19,7 +21,7 @@ where
     }
 
     pub fn projection<S: Borrow<Self>>(self, u: S) -> Vector<T, ROWS> {
-        let u = u.borrow();
+        let u: &Vector<T, ROWS> = u.borrow();
         u * (self * u) / (u * u)
     }
 }

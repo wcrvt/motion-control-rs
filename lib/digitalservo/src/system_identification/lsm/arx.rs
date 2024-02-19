@@ -1,3 +1,5 @@
+use std::ops::{AddAssign, MulAssign};
+
 use crate::algebra::*;
 use num_traits::Float;
 
@@ -13,7 +15,7 @@ where
     phi_sum: Matrix<T, { P + Z + 1 }, { P + Z + 1 }>,
 }
 
-impl<T: Float + Default, const P: usize, const Z: usize> DataBuffer<T, P, Z>
+impl<T: Float + Default + AddAssign + MulAssign, const P: usize, const Z: usize> DataBuffer<T, P, Z>
 where
     [(); P + Z + 1]:,
     [(); Z + 1]:,

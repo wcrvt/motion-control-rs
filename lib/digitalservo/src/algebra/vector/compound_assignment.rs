@@ -4,13 +4,13 @@ use std::ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Sub, SubAssign};
 /* add */
 impl<T, S, const ROWS: usize> AddAssign<S> for Vector<T, ROWS>
 where
-    T: Add<Output = T> + Default + Copy,
+    T: Add<Output = T> + Default + Copy + AddAssign,
     S: Borrow<Self>,
 {
     fn add_assign(&mut self, other: S) {
         let other = other.borrow();
         for i in 0..ROWS {
-            self.data[i] = self.data[i] + other.data[i];
+            self.data[i] += other.data[i];
         }
     }
 }
@@ -18,13 +18,13 @@ where
 /* Substraction */
 impl<T, S, const ROWS: usize> SubAssign<S> for Vector<T, ROWS>
 where
-    T: Sub<Output = T> + Default + Copy,
+    T: Sub<Output = T> + Default + Copy + SubAssign,
     S: Borrow<Self>,
 {
     fn sub_assign(&mut self, other: S) {
         let other = other.borrow();
         for i in 0..ROWS {
-            self.data[i] = self.data[i] - other.data[i];
+            self.data[i] -= other.data[i];
         }
     }
 }
@@ -32,11 +32,11 @@ where
 /* multiply by scalar*/
 impl<T, const ROWS: usize> MulAssign<T> for Vector<T, ROWS>
 where
-    T: Mul<Output = T> + Default + Copy,
+    T: Mul<Output = T> + Default + Copy + MulAssign,
 {
     fn mul_assign(&mut self, other: T) {
         for i in 0..ROWS {
-            self.data[i] = self.data[i] * other;
+            self.data[i] *= other;
         }
     }
 }
@@ -44,11 +44,11 @@ where
 /* divide by scalar*/
 impl<T, const ROWS: usize> DivAssign<T> for Vector<T, ROWS>
 where
-    T: Div<Output = T> + Default + Copy,
+    T: Div<Output = T> + Default + Copy + DivAssign,
 {
     fn div_assign(&mut self, other: T) {
         for i in 0..ROWS {
-            self.data[i] = self.data[i] / other;
+            self.data[i] /= other;
         }
     }
 }

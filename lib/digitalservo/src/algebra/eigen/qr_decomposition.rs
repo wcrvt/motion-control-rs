@@ -1,6 +1,7 @@
 use super::*;
 use num_traits::Float;
 use std::borrow::Borrow;
+use std::ops::{AddAssign, MulAssign, SubAssign};
 
 #[derive(Debug)]
 pub struct QRMatrix<T, const N: usize> {
@@ -8,7 +9,7 @@ pub struct QRMatrix<T, const N: usize> {
     pub r: Matrix<T, N, N>,
 }
 
-impl<T: Float + Default, const N: usize> Eigen<T, N> {
+impl<T: Float + Default + AddAssign + SubAssign + MulAssign, const N: usize> Eigen<T, N> {
     pub fn gram_schmidt_process<S: Borrow<Matrix<T, N, N>>>(m: S) -> QRMatrix<T, N> {
         let m: &Matrix<T, N, N> = m.borrow();
         let mt: Matrix<T, N, N> = m.transpose();
@@ -21,7 +22,7 @@ impl<T: Float + Default, const N: usize> Eigen<T, N> {
         let mut u: [Vector<T, N>; N] = a;
         for i in 0..N {
             for j in 0..i {
-                u[i] = u[i] - a[i].projection(u[j]);
+                u[i] -= a[i].projection(u[j]);
             }
         }
 

@@ -1,3 +1,5 @@
+use std::ops::AddAssign;
+
 use crate::algebra::*;
 use num_traits::Float;
 
@@ -14,7 +16,7 @@ where
     py_z1: Vector<T, { DIFF_ORDER + FILT_ORDER }>,
 }
 
-impl<T: Float + Default, const DIFF_ORDER: usize, const FILT_ORDER: usize>
+impl<T: Float + Default + AddAssign, const DIFF_ORDER: usize, const FILT_ORDER: usize>
     Differentiator<T, DIFF_ORDER, FILT_ORDER>
 where
     [(); DIFF_ORDER + FILT_ORDER]:,

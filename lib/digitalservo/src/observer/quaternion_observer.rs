@@ -1,4 +1,4 @@
-use std::borrow::Borrow;
+use std::{borrow::Borrow, ops::{AddAssign, DivAssign, MulAssign}};
 
 use crate::algebra::*;
 use num_traits::Float;
@@ -68,7 +68,7 @@ pub struct QuaternionObserver<T> {
     pub ts: T,
 }
 
-impl<T: Float + Default> QuaternionObserver<T> {
+impl<T: Float + Default + AddAssign + MulAssign + DivAssign> QuaternionObserver<T> {
     pub fn new(ts: T) -> Self {
         Self {
             mb: Vector::new(),

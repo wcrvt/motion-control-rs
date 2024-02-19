@@ -1,3 +1,5 @@
+use std::ops::{AddAssign, MulAssign};
+
 use num_traits::Float;
 
 pub struct GaussianProcessRegression<T> {
@@ -17,7 +19,7 @@ pub struct PredictedValue<T> {
     pub stdev: T,
 }
 
-impl<T: Float + std::fmt::Debug> GaussianProcessRegression<T> {
+impl<T: Float + AddAssign + MulAssign> GaussianProcessRegression<T> {
     pub fn new(kernel: fn(T, T) -> T, sigma: T) -> Self {
         Self {
             x_sample: vec![],
@@ -72,9 +74,9 @@ impl<T: Float + std::fmt::Debug> GaussianProcessRegression<T> {
         let mut mean: T = T::zero();
         for i in 0..self.sample {
             for j in 0..self.sample {
-                buffer1[i] = buffer1[i] + self.inv_cov[i][j] * self.y_sample[j];
+                buffer1[i] += self.inv_cov[i][j] * self.y_sample[j];
             }
-            mean = mean + k[i] * buffer1[i]
+            mean += k[i] * buffer1[i];
         }
 
         for i in 0..self.sample {
@@ -83,9 +85,9 @@ impl<T: Float + std::fmt::Debug> GaussianProcessRegression<T> {
 
         for i in 0..self.sample {
             for j in 0..self.sample {
-                buffer1[i] = buffer1[i] + self.inv_cov[i][j] * k[j];
+                buffer1[i] += self.inv_cov[i][j] * k[j];
             }
-            buffer2 = buffer2 + k[i] * buffer1[i]
+            buffer2 += k[i] * buffer1[i];
         }
 
         let stdev: T = ((self.kernel)(x, x) - buffer2 + self.sense_variance)
@@ -96,7 +98,7 @@ impl<T: Float + std::fmt::Debug> GaussianProcessRegression<T> {
     }
 }
 
-fn inverse<T: Float + std::fmt::Debug>(m: &Vec<Vec<T>>) -> Option<Vec<Vec<T>>> {
+fn inverse<T: Float + MulAssign>(m: &Vec<Vec<T>>) -> Option<Vec<Vec<T>>> {
     let vlen: usize = m.len();
 
     let mut m1: Vec<Vec<T>> = m.clone();
@@ -129,8 +131,8 @@ fn inverse<T: Float + std::fmt::Debug>(m: &Vec<Vec<T>>) -> Option<Vec<Vec<T>>> {
 
         let scaler: T = T::one() / m1[i][i];
         for j in 0..vlen {
-            m1[i][j] = m1[i][j] * scaler;
-            m2[i][j] = m2[i][j] * scaler;
+            m1[i][j] *= scaler;
+            m2[i][j] *= scaler;
         }
 
         for j in 0..vlen {

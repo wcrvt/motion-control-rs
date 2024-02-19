@@ -1,6 +1,7 @@
 use crate::algebra::*;
 use num_traits::Float;
 
+use std::ops::{AddAssign, SubAssign, MulAssign};
 use super::{continuous, discrete};
 
 #[derive(Debug, Copy, Clone)]
@@ -11,14 +12,14 @@ pub struct BlockedSSR<T, const N: usize> {
     pub ts: T,
 }
 
-impl<T: Float + Default, const N: usize> BlockedSSR<T, N> {
+impl<T: Float + Default + AddAssign + SubAssign + MulAssign, const N: usize> BlockedSSR<T, N> {
     pub fn from_discrete_ssr(m: &discrete::SSR<T, N>) -> BlockedSSR<T, N> {
         let mut a: Matrix<T, N, N> = Matrix::<T, N, N>::diag(T::one());
         let mut b: [[T; N]; N] = [[T::zero(); N]; N];
 
         for i in 0..N {
             b[N - 1 - i] = (a * m.b).data;
-            a = a * m.a;
+            a *= m.a;
         }
 
         let b: Matrix<T, N, N> = Matrix::from(b).transpose();

@@ -1,5 +1,7 @@
+use std::ops::{AddAssign, SubAssign};
+
 use crate::algebra::*;
-use num_traits::{Float, Signed};
+use num_traits::Float;
 
 pub struct KalmanFilter<T, const P: usize, const Z: usize>
 where
@@ -16,7 +18,7 @@ where
 
 impl<T, const P: usize, const Z: usize> KalmanFilter<T, P, Z>
 where
-    T: Float + Signed + Default,
+    T: Float + Default + AddAssign + SubAssign,
     [(); P + Z + 1]:,
     [(); Z + 1]:,
 {

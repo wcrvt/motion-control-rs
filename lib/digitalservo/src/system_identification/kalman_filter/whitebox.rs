@@ -1,3 +1,5 @@
+use std::ops::{AddAssign, SubAssign};
+
 use crate::algebra::*;
 use num_traits::Float;
 
@@ -8,7 +10,7 @@ pub struct KalmanFilter<T, const P: usize> {
     sigma_w: T,
 }
 
-impl<T: Float + Default, const P: usize> KalmanFilter<T, P> {
+impl<T: Float + Default + AddAssign + SubAssign, const P: usize> KalmanFilter<T, P> {
     pub fn new(sigma_v: T, sigma_w: T, cov_0: T) -> Self {
         Self {
             parameter: Vector::new(),

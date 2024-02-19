@@ -1,3 +1,5 @@
+use std::ops::AddAssign;
+
 use crate::algebra::*;
 use num_traits::Float;
 
@@ -14,7 +16,7 @@ where
     ts_h: T,
 }
 
-impl<T: Float + Default + std::fmt::Debug, const P: usize, const Z: usize> FreeFilter<T, P, Z>
+impl<T: Float + Default + AddAssign, const P: usize, const Z: usize> FreeFilter<T, P, Z>
 where
     [(); P - 1]:,
 {

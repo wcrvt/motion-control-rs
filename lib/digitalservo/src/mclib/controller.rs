@@ -1,3 +1,5 @@
+use std::ops::AddAssign;
+
 use crate::signal::{differentiator, integrator};
 use num_traits;
 
@@ -52,7 +54,7 @@ pub struct PDController<T> {
     differentiator_err: differentiator::Differentiator<T, 1, 0>,
 }
 
-impl<T: num_traits::Float + Default> PDController<T> {
+impl<T: num_traits::Float + Default + AddAssign> PDController<T> {
     pub fn new(kp: T, kd: T, g_diff: T, ts: T) -> Self {
         Self {
             kp,

@@ -1,3 +1,5 @@
+use std::ops::AddAssign;
+
 use crate::algebra::*;
 use num_traits::Float;
 
@@ -17,7 +19,7 @@ where
     py0_z1: T,
 }
 
-impl<T: Float + Default, const ORDER: usize> VelocityBased<T, ORDER>
+impl<T: Float + Default + AddAssign, const ORDER: usize> VelocityBased<T, ORDER>
 where
     [(); ORDER + 1]:,
     [(); ORDER + 2]:,

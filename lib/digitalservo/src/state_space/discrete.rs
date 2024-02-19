@@ -1,6 +1,8 @@
 use crate::algebra::*;
 use num_traits::Float;
 
+use std::ops::{AddAssign, SubAssign, MulAssign};
+
 use super::continuous;
 
 #[derive(Debug, Copy, Clone)]
@@ -11,7 +13,7 @@ pub struct SSR<T, const N: usize> {
     pub ts: T,
 }
 
-impl<T: Float + Default, const N: usize> SSR<T, N> {
+impl<T: Float + Default + AddAssign + SubAssign +  MulAssign, const N: usize> SSR<T, N> {
     pub fn new(ts: T) -> Self {
         Self {
             a: Matrix::new(),
@@ -38,7 +40,7 @@ impl<T: Float + Default, const N: usize> SSR<T, N> {
         for _ in 0..INT_DIV {
             let integrand: Matrix<T, N, N> = (c_ssr.a * t).exp();
             a_int += integrand * tp;
-            t = t + tp;
+            t += tp;
         }
 
         let a: Matrix<T, N, N> = (c_ssr.a * ts).exp();

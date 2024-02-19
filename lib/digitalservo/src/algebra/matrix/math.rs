@@ -1,14 +1,16 @@
+use std::ops::{AddAssign, MulAssign, SubAssign};
+
 use super::*;
 use num_traits::Float;
 
 impl<T, const N: usize> Matrix<T, N, N>
 where
-    T: Float + Default,
+    T: Float + Default + AddAssign + MulAssign + SubAssign,
 {
     pub fn trace(&self) -> T {
         let mut ret: T = T::zero();
         for i in 0..N {
-            ret = ret + self[i][i];
+            ret += self[i][i];
         }
         ret
     }
@@ -17,7 +19,7 @@ where
         let qr_matrix = Eigen::gram_schmidt_process(self);
         let mut ret: T = T::one();
         for i in 0..N {
-            ret = ret * qr_matrix.r[i][i];
+            ret *= qr_matrix.r[i][i];
         }
         ret
     }
@@ -35,13 +37,13 @@ where
 
 impl<T, const ROWS: usize, const COLS: usize> Matrix<T, ROWS, COLS>
 where
-    T: Float + Default,
+    T: Float + Default + AddAssign,
 {
     pub fn frobenius_norm(&self) -> T {
         let mut ret: T = T::zero();
         for i in 0..ROWS {
             for j in 0..COLS {
-                ret = ret + self[i][j] * self[i][j];
+                ret += self[i][j] * self[i][j];
             }
         }
         ret.sqrt()

@@ -1,4 +1,5 @@
 use std::borrow::Borrow;
+use std::ops::{AddAssign, MulAssign};
 
 use crate::algebra::*;
 use num_traits::Float;
@@ -88,7 +89,7 @@ pub struct RigidBody<T: Float> {
     ts: T,
 }
 
-impl<T: Float + Default + std::ops::AddAssign + num_traits::Float + std::fmt::Debug> RigidBody<T> {
+impl<T: Float + Default + AddAssign + MulAssign> RigidBody<T> {
     pub fn new(ts: T) -> Self {
         Self {
             translation: Motion::new(),
