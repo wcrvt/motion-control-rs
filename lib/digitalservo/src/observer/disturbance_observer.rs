@@ -66,8 +66,7 @@ where
     }
 
     pub fn jm(mut self, jm: T) -> Self {
-        let a_11: Matrix<T, { ORDER + 1 }, { ORDER + 1 }> =
-            jordan_block::<T, { ORDER + 1 }>(T::zero());
+        let a_11: Matrix<T, { ORDER + 1 }, { ORDER + 1 }> = jordan_block::<T, { ORDER + 1 }>(T::zero());
         let mut a_21: Vector<T, { ORDER + 1 }> = Vector::new();
         a_21[0] = -T::one() / jm;
 
