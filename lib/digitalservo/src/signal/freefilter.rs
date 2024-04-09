@@ -16,12 +16,12 @@ where
     ts_h: T,
 }
 
-impl<T: Float + Default + AddAssign, const P: usize, const Z: usize> FreeFilter<T, P, Z>
+impl<T: Float + Default + AddAssign + std::fmt::Debug, const P: usize, const Z: usize> FreeFilter<T, P, Z>
 where
     [(); P - 1]:,
 {
     pub fn new(numer: &[T; Z], denom: &[T; P], ts: T) -> Self {
-        if Z > P - 1 {
+        if Z > P {
             panic!("filter setting error: improper system.")
         }
         if denom[0] == T::zero() {
@@ -42,9 +42,13 @@ where
             a[i][i + 1] = T::one();
         }
 
+        let mut numer_rev = numer.data;
+        numer_rev.reverse();
+        let numer_rev = Vector::from(numer_rev);
+
         for i in 0..(P - 1) {
             a[P - 2][(P - 2) - i] = -denom[i + 1];
-            c[(P - 2) - i] = if i < Z { numer[i] } else { T::zero() };
+            c[i] = if i < Z { numer_rev[i] } else { T::zero() };
         }
 
         b[P - 2] = T::one();
