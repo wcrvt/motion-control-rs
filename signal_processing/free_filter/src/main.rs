@@ -4,27 +4,26 @@ use digitalservo::signal::freefilter;
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     //Time step configuration
     let mut t: f64 = 0.0;
-    const SLOOP_NUM: usize = 20000;
-    const TS: f64 = 100e-6;
+    const SLOOP_NUM: usize = 50000;
+    const TS: f64 = 1e-6;
+
+    let omega: f64 = 200.0;
+    let mut filter1 = freefilter::FreeFilter::new(&[2.0 * omega], &[1.0, 2.0 * omega], TS);
+    let mut filter2 = freefilter::FreeFilter::new(&[2.0 * omega, omega * omega], &[1.0, 2.0 * omega, omega * omega], TS);
+    let mut filter3 = freefilter::FreeFilter::new(&[0.0, omega * omega], &[1.0, 2.0 * omega, omega * omega], TS);
 
     //Logging
     const DATAFILE_SEPARATOR: &str = ",";
     const DATAFILE_PATH: &str = "data/out.csv";
     let mut data_storage = DataStorage::new(DATAFILE_PATH, DATAFILE_SEPARATOR, SLOOP_NUM);
 
-    let omega: f64 = 10.0;
-    let numer: [f64; 2] = [2.0 * omega, omega.powi(2)];
-    let denom: [f64; 3] = [1.0, 2.0 * omega, omega.powi(2)];
-    let mut filter = freefilter::FreeFilter::new(&numer, &denom, TS);
-
     for _ in 0..SLOOP_NUM {
-        let u: f64 = 1.0; // + (omega * t).sin() + (0.2 * omega * t).sin() ;
-        let y: f64 = filter.update(u);
-
-        //Logging
-        data_storage.add([t, u, y]);
-
+        let x: f64 = 1.0;
+        let y1: f64 = filter1.update(x);
+        let y2: f64 = filter2.update(x);
+        let y3: f64 = filter3.update(x);
         t += TS;
+        data_storage.add([t, x, y1, y2, y3]);
     }
 
     data_storage.write_file()?;
