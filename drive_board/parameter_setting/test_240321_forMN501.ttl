@@ -1,0 +1,80 @@
+
+/* Update System parameters  */
+"_sendresponse 1 129 SamplingFreq double 80000",
+"_sendrequest 1 128 SamplingFreq",
+
+/* Update Motor parameters  */
+/* Update Motor(electric) parameters  */
+"_sendresponse 1 129 R double 0.05",
+"_sendrequest 1 128 R",
+"_sendresponse 1 129 Ld double 0.030e-3",
+"_sendrequest 1 128 Ld",
+"_sendresponse 1 129 Lq double 0.030e-3",
+"_sendrequest 1 128 Lq",
+"_sendresponse 1 129 Phi double 2.21e-3",
+"_sendrequest 1 128 Phi",
+
+/* Update Motor(mechanical) parameters  */
+"_sendresponse 1 129 Poles double 28",
+"_sendrequest 1 128 Poles",
+"_sendresponse 1 129 Jm double 5.8e-6",
+"_sendrequest 1 128 Jm",
+
+/* HFI parameters  */
+"_sendresponse 1 129 Nh double 4",
+"_sendrequest 1 128 Nh",
+"_sendresponse 1 129 K double 1",
+"_sendrequest 1 128 K",
+"_sendresponse 1 129 Vh double 3",
+"_sendrequest 1 128 Vh",
+"_sendresponse 1 129 ADCTrigMod double 0",
+"_sendrequest 1 128 ADCTrigMod",
+"_sendresponse 1 129 ADCTrigTime double 550e-9",
+"_sendrequest 1 128 ADCTrigTime",
+
+/* Pulse parameters  */
+"_sendresponse 1 129 PulseTargetCurrent double 6.5",
+"_sendrequest 1 128 PulseTargetCurrent",
+"_sendresponse 1 129 PulseSNLowerErrorValue double 0.000001",
+"_sendrequest 1 128 PulseSNLowerErrorValue",
+
+/* Hybrid parameters  */
+"_sendresponse 1 129 SwitchOmegaL double 200",
+"_sendrequest 1 128 SwitchOmegaL",
+"_sendresponse 1 129 SwitchOmegaH double 350",
+"_sendrequest 1 128 SwitchOmegaH",
+"_sendresponse 1 129 SwitchOmegaHFIVoltageOffset double 150",
+"_sendrequest 1 128 SwitchOmegaHFIVoltageOffset",
+
+/* CurrentCtrl parameters  */
+"_sendresponse 1 129 CurrentCtrlBandwidth double 2500",
+"_sendrequest 1 128 CurrentCtrlBandwidth",
+"_sendresponse 1 129 CurrentLimit double 5",
+"_sendrequest 1 128 CurrentLimit",
+
+/* PLL parameters  */
+"_sendresponse 1 129 PLLBandwidth double 1000",
+"_sendrequest 1 128 PLLBandwidth",
+"_sendresponse 1 129 PLLOmegaLPFBandwidth double 250",
+"_sendrequest 1 128 PLLOmegaLPFBandwidth",
+
+/* SpeedCtrl parameters  */
+"_sendresponse 1 129 SpeedCtrlBandwidth double 75",
+"_sendrequest 1 128 SpeedCtrlBandwidth",
+
+/* PositionCtrl parameters  */
+"_sendresponse 1 129 PositionCtrlBandwidth double 10",
+"_sendrequest 1 128 PositionCtrlBandwidth",
+
+/* DOB parameters  */
+"_sendresponse 1 129 DOBBandwidth double 100",
+"_sendrequest 1 128 DOBBandwidth",
+
+"_sendresponse 1 129 Cf double 1",
+"_sendrequest 1 128 Cf",
+
+"_sendresponse 1 129 DriveMode double 2",
+"_sendrequest 1 128 DriveMode",
+
+"_sendresponse 1 129 cmdval double 0",
+"_sendresponse 1 129 drive double 0",
