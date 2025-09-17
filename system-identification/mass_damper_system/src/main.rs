@@ -1,3 +1,6 @@
+#![allow(incomplete_features)]
+#![feature(generic_const_exprs)]
+
 use rand_distr::{Distribution, Normal};
 
 use digitalservo::data_storage::DataStorage;

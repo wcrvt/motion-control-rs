@@ -37,10 +37,10 @@ fn main() {
     let mut sample_y: [f64; SAMPLES] = [0.0; SAMPLES];
 
     /* Random sample */
-    let mut rng = rand::thread_rng();
+    let mut rng = rand::rng();
     for i in 0..SAMPLES {
-        sample_x[i] = rng.gen::<f64>() * RANGE_X;
-        sample_y[i] = f(sample_x[i]) + (rng.gen::<f64>() - 0.5) * 0.5;
+        sample_x[i] = rng.random::<f64>() * RANGE_X;
+        sample_y[i] = f(sample_x[i]) + (rng.random::<f64>() - 0.5) * 0.5;
 
         gpr.add(sample_x[i], sample_y[i]);
         data_storage_sample.add([sample_x[i], sample_y[i]]);

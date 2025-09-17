@@ -21,7 +21,8 @@ pub struct SeriesLinkManipulator<T: Float> {
     ts: T,
 }
 
-impl<T: Float + Default + std::ops::AddAssign + MulAssign> SeriesLinkManipulator<T> {
+impl<T: Float + Default + std::ops::AddAssign + MulAssign> SeriesLinkManipulator<T>
+{
     pub fn new(
         kt: [T; JOINTSPACE_DIM],
         jm: [T; JOINTSPACE_DIM],

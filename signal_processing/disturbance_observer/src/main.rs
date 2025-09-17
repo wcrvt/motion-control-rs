@@ -1,3 +1,6 @@
+#![allow(incomplete_features)]
+#![feature(generic_const_exprs)]
+
 use digitalservo::data_storage::DataStorage;
 use digitalservo::observer::disturbance_observer;
 use digitalservo::plant::motor;

@@ -75,7 +75,7 @@ pub fn fft<T: FftNum + Float>(data: &[T], logarithmic: bool) -> Vec<FFTData<T>> 
         .map(|(i, x)| {
             let c: T = if i == 0 { t_1 } else { t_2 };
             let power: T = c * (x.re * x.re + x.im * x.im).sqrt();
-            match logarithmic {
+            let power: T = match logarithmic {
                 true => t_20 * power.log10(),
                 _ => power,
             };

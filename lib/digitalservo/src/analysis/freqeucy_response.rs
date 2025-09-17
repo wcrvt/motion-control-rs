@@ -71,7 +71,13 @@ where
             let gain: T = T::from(20.0).unwrap() * freq_res.norm().log10();
             let phase: T = freq_res.im.atan2(freq_res.re);
             self.storage.add([freq, gain, phase, freq_res.re, freq_res.im]);
-    
+
+            // let g = freq_res.norm();
+            // let ge = (g - T::one()).abs();
+            // if ge < T::from(1e-1).unwrap() {
+            //     println!("{:?} {:?} {:?}", freq, g, phase * T::from(180.0 / std::f64::consts::PI). unwrap() + T::from(180.0).unwrap());
+            // }
+
             freq += self.dfreq;
         }
 
